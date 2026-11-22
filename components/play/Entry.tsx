@@ -108,6 +108,13 @@ export function UploadScreen({
               Read it
             </button>
           </form>
+          <p className="mt-4 text-sm text-ink-3">
+            No paper handy?{" "}
+            <a href="/sample/google-file-system.pdf" download className="text-accent-hover underline underline-offset-2">
+              Download a sample paper
+            </a>{" "}
+            (The Google File System, 2003), then drop it above.
+          </p>
         </>
       ) : (
         <div className="mt-8 flex w-full max-w-lg flex-col items-center rounded-2xl border border-line bg-paper-2 px-6 py-8">

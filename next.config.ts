@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/deeper": ["./public/demo/manifest.json"],
     "/api/play/walkthrough": ["./public/demo/walkthrough.json"],
+    // The local database's starting data (lib/localDb.ts copies it in on a fresh instance).
+    "/**": ["./seed/**"],
   },
 };
 

@@ -27,7 +27,23 @@ const baseUrl = () =>
 
 const g = globalThis as unknown as { __curioDb?: { tables: Tables; mtime: number } };
 
+/** First start with no data (e.g. a fresh Vercel instance): copy in seed/ (the library papers). */
+let seeded = false;
+function ensureSeed() {
+  if (seeded) return;
+  seeded = true;
+  const seed = path.join(process.cwd(), "seed");
+  if (fs.existsSync(DB_FILE) || !fs.existsSync(path.join(seed, "db.json"))) return;
+  try {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.cpSync(seed, DATA_DIR, { recursive: true });
+  } catch (err) {
+    console.error("[localDb] couldn’t copy the seed data", err);
+  }
+}
+
 function load(): Tables {
+  ensureSeed();
   let mtime = 0;
   try {
     mtime = fs.statSync(DB_FILE).mtimeMs;
