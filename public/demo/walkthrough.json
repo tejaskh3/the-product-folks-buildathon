@@ -1,0 +1,510 @@
+{
+  "fileId": "file_01SRrsTjokEKGokJzJkFRqf3",
+  "paper": {
+    "title": "Attention Is All You Need",
+    "authors": "Vaswani et al.",
+    "year": 2017
+  },
+  "motif": "Our running example is the sentence from the paper's own attention plots: \"The Law will never be perfect, but its application should be just\", drawn as a row of rounded word tiles left to right. Grey tiles are plain words, the tile for \"its\" is highlighted amber as the query, and violet curved arcs show attention links, with thicker arcs for stronger weights. Slow orange arrows mark sequential RNN steps, green marks parallel computation, and red marks costs or limits.",
+  "scenes": [
+    {
+      "id": "s1",
+      "index": 0,
+      "stage": "problem",
+      "title": "RNNs must read one word at a time",
+      "narration": "To understand \"its\", a recurrent network walks the sentence word by word, each step waiting on the last. That chain can't be split across the GPU, so training long sentences is slow.",
+      "pages": [
+        2
+      ],
+      "quote": "This inherently sequential nature precludes parallelization within training examples, which becomes critical at longer sequence lengths, as memory constraints limit batching across examples.",
+      "diagram": {
+        "id": "s1",
+        "title": "RNNs must read one word at a time",
+        "caption": "A recurrent network computes each hidden state from the previous one plus the current word, so this 13-token sentence takes 13 steps in strict order (p. 2). Table 1 lists O(n) sequential operations for recurrent layers (p. 6).",
+        "tryHint": "Try: drag the time step slider, then press “Try computing all words at once” to see which steps are blocked.",
+        "html": "<style>.rw{font-family:inherit;color:var(--ink,#1a1a1a);max-width:640px;margin:0 auto;position:relative}.rw h3{font-size:17px;font-weight:600;margin:0 0 6px}.rw svg{display:block;width:100%;height:auto;background:var(--paper,#fff)}.rw text{font-family:inherit}.rw .ctl{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:8px;font-size:14px;color:var(--ink-2,#444)}.rw label{display:flex;align-items:center;gap:8px}.rw button{font:inherit;font-size:14px;padding:6px 12px;border:1.5px solid var(--line,#ddd);border-radius:8px;background:var(--paper,#fff);color:var(--ink,#1a1a1a);cursor:pointer}.rw button:hover,.rw button:focus-visible{border-color:var(--accent,#e8590c);background:var(--accent-soft,#fde8d8);outline:none}.rw input[type=range]{accent-color:var(--accent,#e8590c);width:160px}.rw [data-explore]{cursor:pointer;outline:none}.rw .hit{fill:transparent;stroke:none}.rw [data-explore]:hover .hit,.rw [data-explore]:focus-visible .hit{fill:var(--accent-soft,#fde8d8);stroke:var(--accent,#e8590c);stroke-width:1.5}.rw .hitl{fill:none;stroke:transparent;stroke-width:12;stroke-linecap:round}.rw [data-explore]:hover .hitl,.rw [data-explore]:focus-visible .hitl{stroke:var(--accent-soft,#fde8d8)}.rw .tile{transition:opacity .4s}.rw .ov{transition:stroke-dashoffset .25s linear}.rw .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style><div class='rw'><h3>RNNs must read one word at a time</h3><svg viewBox='0 0 440 382' role='img' aria-labelledby='rwTitle'><title id='rwTitle'>A recurrent network reads the sentence The Law will never be perfect, but its application should be just, one word per step; each hidden state waits on the previous one.</title><defs><marker id='rwMo' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='6' markerHeight='6' orient='auto'><path d='M1 1L9 5L1 9' fill='none' stroke='var(--accent,#e8590c)' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></marker><marker id='rwMg' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='6' markerHeight='6' orient='auto'><path d='M1 1L9 5L1 9' fill='none' stroke='var(--line,#d6d6d6)' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></marker></defs><g id='rwTicks'></g><g id='rwTiles'></g><g id='rwIts' data-explore='query-its' tabindex='0' role='button' aria-label='The query word its'></g><g id='rwCirc' data-explore='hidden-state' tabindex='0' role='button' aria-label='Hidden states h1 to h13'></g><g id='rwChain' data-explore='sequential-chain' tabindex='0' role='button' aria-label='Sequential chain of RNN steps'></g><text id='rwStatus' x='220' y='258' text-anchor='middle' font-size='16' fill='var(--ink,#1a1a1a)'></text><g id='rwPath' data-explore='path-length' tabindex='0' role='button' aria-label='Path length from Law to its'><rect class='hit' x='24' y='267' width='392' height='25' rx='6'/><text id='rwPathT' x='220' y='285' text-anchor='middle' font-size='16'></text></g><text x='92' y='312' font-size='16' fill='var(--ink-3,#888)'>sequential steps on the GPU →</text><g id='rwTL' data-explore='sequential-ops' tabindex='0' role='button' aria-label='RNN needs O(n) sequential operations'><rect class='hit' x='12' y='317' width='404' height='30' rx='6'/><text x='20' y='337' font-size='16' fill='var(--ink-2,#444)'>RNN</text><g id='rwSlots'></g></g><text x='20' y='365' font-size='16' fill='var(--ink-2,#444)'>At once</text><g id='rwPar'></g></svg><div class='ctl'><button id='rwReplay' type='button'>↻ Replay</button><label for='rwRange'>Time step t <input id='rwRange' type='range' min='0' max='13' step='1' value='13'><output id='rwOut'>13</output></label><button id='rwTry' type='button'>Try computing all words at once</button></div><p class='sr' aria-live='polite' id='rwLive'></p></div><script>(function(){var S='http://www.w3.org/2000/svg';function $(i){return document.getElementById(i)}function el(t,a,p){var e=document.createElementNS(S,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}var W=['The','Law','will','never','be','perfect',',','but','its','application','should','be','just'],N=W.length;var A='var(--accent,#e8590c)',AS='var(--accent-soft,#fde8d8)',LN='var(--line,#d6d6d6)',I3='var(--ink-3,#888)',GR='#2e9e5b',RD='#d4483b',AMB='#d99a1e';var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;var rows=[[0,7,36,96],[7,13,158,218]];var X=[],TY=[],CY=[],tiles=[],circ=[],xs=[],ticks=[],ov=[],slots=[],pslots=[];rows.forEach(function(r){var ws=[],tot=0,i;for(i=r[0];i<r[1];i++){var w0=Math.max(24,W[i].length*8.8+16);ws.push(w0);tot+=w0}tot+=6*(ws.length-1);var x=(440-tot)/2;for(i=r[0];i<r[1];i++){var w=ws[i-r[0]];X[i]=x+w/2;TY[i]=r[2];CY[i]=r[3];var g=el('g',{'class':'tile'},i==8?$('rwIts'):$('rwTiles'));if(i==8)el('rect',{'class':'hit',x:x-5,y:r[2]-5,width:w+10,height:38,rx:9},g);var rc=el('rect',{x:x,y:r[2],width:w,height:28,rx:7,fill:i==8?'#fcefd0':'var(--node,#eef0f3)',stroke:i==8?AMB:LN,'stroke-width':1.5},g);var tx=el('text',{x:X[i],y:r[2]+19,'text-anchor':'middle','font-size':16,fill:'var(--ink,#1a1a1a)'},g);tx.textContent=W[i];tiles.push({g:g,r:rc});ticks.push(el('line',{x1:X[i],x2:X[i],y1:r[2]+28,y2:r[3]-11,stroke:LN,'stroke-width':1.5,'stroke-linecap':'round'},$('rwTicks')));x+=w+6}});var cg=$('rwCirc');rows.forEach(function(r){el('rect',{'class':'hit',x:X[r[0]]-17,y:r[3]-17,width:X[r[1]-1]-X[r[0]]+34,height:34,rx:17},cg)});for(var i=0;i<N;i++){circ.push(el('circle',{cx:X[i],cy:CY[i],r:11,fill:'var(--paper,#fff)',stroke:LN,'stroke-width':1.5},cg));var t=el('text',{x:X[i],y:CY[i]+5,'text-anchor':'middle','font-size':16,fill:RD,display:'none'},cg);t.textContent='×';xs.push(t)}var ch=$('rwChain');for(i=0;i<N-1;i++){var d=i==6?'M'+X[6]+' '+(CY[6]+11)+'V126Q'+X[6]+' 134 '+(X[6]-8)+' 134H22Q14 134 14 142V210Q14 218 22 218H'+(X[7]-13):'M'+(X[i]+11)+' '+CY[i]+'H'+(X[i+1]-13);el('path',{'class':'hitl',d:d},ch);el('path',{d:d,fill:'none',stroke:LN,'stroke-width':1.5,'stroke-linecap':'round','marker-end':'url(#rwMg)'},ch);var o=el('path',{'class':'ov',d:d,fill:'none',stroke:A,'stroke-width':2,'stroke-linecap':'round',pathLength:1,'stroke-dasharray':1,'stroke-dashoffset':1},ch);if(RM)o.style.transition='none';ov.push(o)}for(i=0;i<N;i++){slots.push(el('rect',{x:92+i*24,y:322,width:20,height:20,rx:4,fill:'none',stroke:LN,'stroke-width':1.5},$('rwSlots')));pslots.push(el('rect',{x:92+i*24,y:350,width:20,height:20,rx:4,fill:'none',stroke:i?LN:GR,'stroke-width':1.5,'stroke-dasharray':'3 3'},$('rwPar')))}var st=$('rwStatus'),pt=$('rwPathT'),rg=$('rwRange'),out=$('rwOut'),live=$('rwLive');function render(t,par){for(var i=0;i<N;i++){var c=circ[i];xs[i].setAttribute('display',par&&i?'inline':'none');if(par){c.setAttribute('fill',i?'var(--paper,#fff)':GR);c.setAttribute('stroke',i?RD:GR);c.setAttribute('stroke-dasharray',i?'3 3':'none')}else{c.setAttribute('stroke-dasharray','none');c.setAttribute('fill',i<t-1?AS:(i==t-1?A:'var(--paper,#fff)'));c.setAttribute('stroke',i<t?A:LN)}var cur=!par&&i==t-1;tiles[i].r.setAttribute('stroke',cur?A:(i==8?AMB:LN));tiles[i].r.setAttribute('stroke-width',cur?2.5:1.5);ticks[i].setAttribute('stroke',i<t&&!par?I3:LN);slots[i].setAttribute('fill',i<t?A:'none');slots[i].setAttribute('stroke',i<t?A:LN);pslots[i].setAttribute('fill',par&&!i?GR:'none');pslots[i].setAttribute('stroke',i?(par?RD:LN):GR)}for(i=0;i<N-1;i++){var on=!par&&t>=i+2;ov[i].setAttribute('stroke-dashoffset',on?0:1);if(on)ov[i].setAttribute('marker-end','url(#rwMo)');else ov[i].removeAttribute('marker-end')}var s,p,pc=I3;if(par){s='Blocked: each hₜ needs hₜ₋₁ first';p='Only h₁ can start; 12 words must wait';pc=RD}else{if(t==0)s='Drag the slider or press Replay';else if(t==N)s='13 words → 13 steps, strictly in order';else if(t==9)s='Step 9/13: “its” waited behind 8 steps';else if(t==1)s='Step 1/13: reads “The”, starts the chain';else s='Step '+t+'/13: reads “'+W[t-1]+'”, waits on h'+(t-1);if(t>=9){p='“Law” → “its”: signal must cross 7 steps';pc=RD}else p='“Law” → “its”: not linked yet'}st.textContent=s;pt.textContent=p;pt.setAttribute('fill',pc);live.textContent=s}var raf=0,tm=0;function stop(){if(raf)cancelAnimationFrame(raf);raf=0;clearTimeout(tm)}function set(v){rg.value=v;out.textContent=v;render(v,false)}function showTiles(on){tiles.forEach(function(o,i){o.g.style.transitionDelay=on?(i*40)+'ms':'0ms';o.g.style.opacity=on?1:0})}function intro(){stop();if(RM){showTiles(true);set(N);return}showTiles(false);set(0);setTimeout(function(){showTiles(true)},60);var t0=performance.now(),last=-1;function f(now){var e=now-t0,t=e<900?0:Math.min(N,Math.floor((e-900)/300)+1);if(t!=last){set(t);last=t}if(e<900+N*300+100)raf=requestAnimationFrame(f);else raf=0}raf=requestAnimationFrame(f)}rg.addEventListener('input',function(){stop();set(+rg.value)});$('rwReplay').addEventListener('click',intro);$('rwTry').addEventListener('click',function(){stop();var v=+rg.value;render(v,true);tm=setTimeout(function(){render(v,false)},1900)});intro()})();</script>",
+        "explorables": [
+          {
+            "id": "hidden-state",
+            "label": "Hidden state hₜ",
+            "blurb": "Each circle is the RNN's memory after reading one more word. It is computed from the previous circle plus the current word, so it cannot exist before its predecessor.",
+            "pages": [
+              2
+            ],
+            "quote": "Aligning the positions to steps in computation time, they generate a sequence of hidden states ht, as a function of the previous hidden state ht−1 and the input for position t."
+          },
+          {
+            "id": "sequential-chain",
+            "label": "The sequential chain",
+            "blurb": "The orange arrows are dependencies: step t must finish before step t+1 can begin. Within a single sentence the work cannot be split across GPU cores, and longer sentences make this worse.",
+            "pages": [
+              2
+            ],
+            "quote": "This inherently sequential nature precludes parallelization within training examples, which becomes critical at longer sequence lengths, as memory constraints limit batching across examples."
+          },
+          {
+            "id": "sequential-ops",
+            "label": "O(n) sequential steps",
+            "blurb": "For n words a recurrent layer needs n steps run one after another. The paper's Table 1 contrasts this with O(1) for self-attention.",
+            "pages": [
+              6
+            ],
+            "quote": "As noted in Table 1, a self-attention layer connects all positions with a constant number of sequentially executed operations, whereas a recurrent layer requires O(n) sequential operations."
+          },
+          {
+            "id": "path-length",
+            "label": "Law → its path length",
+            "blurb": "To link “its” back to “Law”, information has to pass through every hidden state in between. The paper argues that longer paths like this make long-range dependencies harder to learn.",
+            "pages": [
+              6
+            ],
+            "quote": "One key factor affecting the ability to learn such dependencies is the length of the paths forward and backward signals have to traverse in the network."
+          },
+          {
+            "id": "query-its",
+            "label": "Why “its”?",
+            "blurb": "“its” refers back to “Law”, which is a classic anaphora. The paper's own attention plots show heads that link these two words directly.",
+            "pages": [
+              14
+            ],
+            "quote": "Two attention heads, also in layer 5 of 6, apparently involved in anaphora resolution."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s2",
+      "index": 1,
+      "stage": "prior",
+      "title": "Convolutions parallelize but distant words stay far apart",
+      "narration": "Convolutional models like ByteNet and ConvS2S process all words at once. But linking \"its\" back to \"Law\" still takes several stacked layers, and the gap grows with distance, which makes long-range links harder to learn.",
+      "pages": [
+        2,
+        6
+      ],
+      "quote": "In these models, the number of operations required to relate signals from two arbitrary input or output positions grows in the distance between positions, linearly for ConvS2S and logarithmically for ByteNet.",
+      "diagram": {
+        "id": "s2",
+        "title": "Convolutions parallelize but distant words stay far apart",
+        "caption": "Convolutional models such as ByteNet and ConvS2S compute every position in parallel. Relating two positions still takes more operations as they get farther apart: linearly for ConvS2S, logarithmically for ByteNet (p. 2; Table 1, p. 6; p. 7).",
+        "tryHint": "Try: drag the target-word slider away from “its”, then switch between contiguous and dilated kernels and watch the red path and layer count change.",
+        "html": "<style>.cv{color:var(--ink,#1b1b1f);background:var(--paper,#fff);font:inherit}.cv svg{display:block;width:100%;height:auto}.cv .fd{transition:opacity .5s}.cv .tl rect{fill:var(--node,#eef0f4);stroke:var(--line,#d6d9df);stroke-width:1.5;transition:stroke .2s}.cv .tl{cursor:pointer}.cv .tl:hover rect{stroke:var(--accent,#e8772e);stroke-width:2}.cv .tl.q{cursor:default}.cv .tl.q rect{fill:#fbe3a6;stroke:#d99a1e}.cv .tl.t rect{stroke:#d64545;stroke-width:2.5}.cv .tl text{font-size:23px;fill:var(--ink,#1b1b1f)}.cv .nd{fill:var(--paper,#fff);stroke:var(--ink-3,#9aa0aa);stroke-width:1.5;transition:fill .25s,stroke .25s,opacity .4s}.cv .nd.dim{opacity:.28}.cv .nd.p{fill:#d64545;stroke:#d64545}.cv .nd.on{fill:#2f9e5b;stroke:#2f9e5b}.cv [data-explore]{cursor:pointer;outline:none}.cv .hit{fill:transparent;stroke:transparent;stroke-width:1.5}.cv [data-explore]:hover .hit,.cv [data-explore]:focus-visible .hit{fill:var(--accent-soft,#fdebdc);stroke:var(--accent,#e8772e)}.cv .hl{fill:none;stroke:transparent;stroke-width:16;stroke-linecap:round;stroke-linejoin:round}.cv [data-explore]:hover .hl,.cv [data-explore]:focus-visible .hl{stroke:var(--accent-soft,#fdebdc)}.cv .cone{fill:#8f96a3;fill-opacity:.1;stroke:var(--ink-3,#9aa0aa);stroke-dasharray:4 4;stroke-width:1.5}.cv [data-explore]:hover .cone,.cv [data-explore]:focus-visible .cone{stroke:var(--accent,#e8772e);fill:var(--accent-soft,#fdebdc);fill-opacity:.7;stroke-dasharray:none}.cv .cap{font-size:14px;color:var(--ink-2,#4a4f58);min-height:40px;margin:6px 2px;line-height:1.4}.cv .ctl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;font-size:14px}.cv button{font:inherit;font-size:13px;color:var(--ink,#1b1b1f);background:var(--paper,#fff);border:1.5px solid var(--line,#d6d9df);border-radius:999px;padding:5px 11px;cursor:pointer}.cv button:hover,.cv button:focus-visible{border-color:var(--accent,#e8772e)}.cv button.act{border-color:var(--accent,#e8772e);background:var(--accent-soft,#fdebdc)}.cv input[type=range]{accent-color:var(--accent,#e8772e);width:160px}.cv .ro{margin-top:12px;font-size:13px}.cv .rw{display:grid;grid-template-columns:minmax(120px,190px) 1fr 28px;gap:8px;align-items:center;margin:5px 0;color:var(--ink-2,#4a4f58)}.cv .rw.a{color:var(--ink,#1b1b1f);font-weight:600}.cv .br{height:10px;background:#f1f2f4;border-radius:5px;overflow:hidden}.cv .br i{display:block;height:100%;width:0;border-radius:5px;transition:width .8s}.cv .tb{margin-top:12px;padding:6px;border:1.5px solid transparent;border-radius:10px;max-width:460px}.cv .tb:hover,.cv .tb:focus-visible{border-color:var(--accent,#e8772e);background:var(--accent-soft,#fdebdc)}.cv table{border-collapse:collapse;font-size:13px;width:100%}.cv td{padding:4px 8px;border-bottom:1px solid var(--line,#d6d9df)}.cv td+td{text-align:right;font-family:inherit}.cv .sm{font-size:12px;color:var(--ink-3,#7a808a);line-height:1.4}</style><div class='cv'><svg id='cvS' viewBox='0 0 640 540' role='img' aria-labelledby='cvT'><title id='cvT'>Stacked convolutional layers over the sentence. A red path shows how many layers the signal climbs for its to reach another word.</title><g id='gC' class='fd' data-explore='dilated-kernels' tabindex='0' role='button' aria-label='Receptive field: contiguous versus dilated kernels'><polygon id='cone' class='cone'/></g><g id='gF' class='fd'></g><g id='gN'></g><g id='gP' class='fd' data-explore='path-length' tabindex='0' role='button' aria-label='Path length between its and the target word'><path id='ph' class='hl'/><path id='pl' fill='none' stroke='#d64545' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></g><circle id='ring' class='fd' r='9' fill='#f2b441' stroke='#b27a0f' stroke-width='1.5'/><g data-explore='stacked-layers' tabindex='0' role='button' aria-label='Stacked convolutional layers'><rect class='hit' x='4' y='84' width='54' height='284' rx='10'/><path d='M54 94 H46 V362 H54' fill='none' stroke='var(--ink-3,#9aa0aa)' stroke-width='1.5' stroke-linecap='round'/><text transform='translate(24 228) rotate(-90)' text-anchor='middle' dominant-baseline='central' font-size='23' fill='var(--ink-2,#4a4f58)'>conv layers</text></g><g id='gT' class='fd'></g><path id='arc' class='fd' fill='none' stroke='#7c5cc4' stroke-width='2' stroke-dasharray='6 5' stroke-linecap='round'/></svg><p class='cap' id='cap' aria-live='polite'></p><div class='ctl'><label for='sl'>Target word: <b id='slw'>Law</b></label><input id='sl' type='range' min='0' max='11' value='1' aria-label='Choose the word that its must reach'><span><button id='bC' class='act'>Contiguous kernels</button> <button id='bD'>Dilated kernels</button></span><button id='rp'>↻ Replay</button></div><div class='ro'><div class='sm'>Layers needed to connect “its” ↔ “<span id='tw'>Law</span>” (distance <span id='dist'>7</span>):</div><div class='rw' id='rc'><span>Contiguous (ConvS2S-style)</span><div class='br'><i id='bc' style='background:#d64545'></i></div><b id='vc'></b></div><div class='rw' id='rd'><span>Dilated (ByteNet-style)</span><div class='br'><i id='bd' style='background:#e58a8a'></i></div><b id='vd'></b></div><div class='rw'><span>Self-attention (next scene)</span><div class='br'><i id='ba' style='background:#7c5cc4'></i></div><b>1</b></div></div><div class='tb' data-explore='complexity-table' tabindex='0' role='button' aria-label='Table 1: maximum path length by layer type'><div class='sm'>Maximum path length between two positions (Table 1, p. 6; p. 7)</div><table><tr><td>Recurrent</td><td>O(n)</td></tr><tr><td>Convolutional, contiguous kernels</td><td>O(n/k)</td></tr><tr><td>Convolutional, dilated kernels</td><td>O(log<sub>k</sub>(n))</td></tr><tr><td>Self-attention</td><td>O(1)</td></tr></table></div><p class='sm'>Illustrative toy setup: kernel width 3, with dilation doubling each layer (1, 2, 4, 8). Green marks positions computed in parallel, red marks the path cost, and the dashed violet arc marks a direct attention link. Click any word tile to make it the target.</p></div><script>(function(){var W=['The','Law','will','never','be','perfect',',','but','its','application','should','be','just'],Q=8,N=13,LM=8,S='http://www.w3.org/2000/svg';var $=function(i){return document.getElementById(i)};var mode='c',tg=1,timers=[],RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;function cx(j){return 79+44*j}function ly(l){return l?352-(l-1)*36:390}function mk(t,a,p){var e=document.createElementNS(S,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}var gT=$('gT'),gN=$('gN'),gF=$('gF'),gP=$('gP'),gC=$('gC'),ring=$('ring'),arc=$('arc'),tiles=[],nodes=[];W.forEach(function(w,j){var g=mk('g',{'class':'tl'},gT);mk('rect',{x:cx(j)-19,y:390,width:38,height:140,rx:9},g);var tx=mk('text',{transform:'translate('+cx(j)+' 460) rotate(-90)','text-anchor':'middle','dominant-baseline':'central'},g);tx.textContent=w;if(j!=Q)g.addEventListener('click',function(){settle();tg=j;sync();draw(true);finalCap()});tiles.push(g)});for(var l=1;l<=LM;l++){var par=gN;if(l==1){par=mk('g',{'data-explore':'parallel-layer',tabindex:'0',role:'button','aria-label':'One convolutional layer computed in parallel'},gN);mk('rect',{'class':'hit',x:60,y:340,width:566,height:24,rx:12},par)}nodes[l]=[];for(var j=0;j<N;j++)nodes[l].push(mk('circle',{'class':'nd',cx:cx(j),cy:ly(l),r:6},par))}function dil(l){return mode=='c'?1:Math.pow(2,l-1)}function need(d,m){if(m=='c')return d;var L=0;while(Math.pow(2,L)-1<d)L++;return L}function info(){var d=Math.abs(Q-tg);return{d:d,s:Q>tg?1:-1,L:need(d,mode),Lc:need(d,'c'),Ld:need(d,'d')}}function cols(d,L,s){var c=[tg];for(var l=1;l<=L;l++){var st=mode=='c'?1:((d>>(l-1))&1)*Math.pow(2,l-1);c.push(c[l-1]+s*st)}return c}function draw(anim){var I=info(),d=I.d,L=I.L,c=cols(d,L,I.s),l,j;tiles.forEach(function(g,k){g.setAttribute('class','tl'+(k==Q?' q':'')+(k==tg?' t':''))});for(l=1;l<=LM;l++)for(j=0;j<N;j++){var k='nd';if(l>L)k+=' dim';else if(c[l]==j&&l<L)k+=' p';nodes[l][j].setAttribute('class',k)}while(gF.firstChild)gF.removeChild(gF.firstChild);for(l=1;l<=L;l++)for(var o=-1;o<=1;o++){var jj=c[l]+o*dil(l);if(jj>=0&&jj<N)mk('line',{x1:cx(c[l]),y1:ly(l),x2:cx(jj),y2:ly(l-1),stroke:'var(--ink-3,#9aa0aa)','stroke-width':1.2,'stroke-opacity':.55,'stroke-linecap':'round'},gF)}var pd='M'+cx(c[0])+' 390';for(l=1;l<=L;l++)pd+=' L'+cx(c[l])+' '+ly(l);var p=$('pl');p.setAttribute('d',pd);$('ph').setAttribute('d',pd);ring.setAttribute('cx',cx(Q));ring.setAttribute('cy',ly(L));var R=[],pts=[];for(l=0;l<=L;l++){var r=0;for(var m=l+1;m<=L;m++)r+=dil(m);R[l]=r}pts.push(cx(Q)+','+(ly(L)-11));for(l=L-1;l>=0;l--)pts.push((cx(Math.min(N-1,Q+R[l]))+14)+','+(l?ly(l):386));for(l=0;l<L;l++)pts.push((cx(Math.max(0,Q-R[l]))-14)+','+(l?ly(l):386));$('cone').setAttribute('points',pts.join(' '));var a=cx(tg),b=cx(Q),h=Math.abs(a-b)*0.55+50;arc.setAttribute('d','M'+a+' 388 Q'+((a+b)/2)+' '+(388-h*2)+' '+b+' 388');readout();if(anim&&!RM)dash(.7);else{p.style.transition='none';p.style.strokeDasharray='none';p.style.strokeDashoffset=0}}function dash(t){var p=$('pl'),n=p.getTotalLength();p.style.transition='none';p.style.strokeDasharray=n;p.style.strokeDashoffset=n;p.getBoundingClientRect();p.style.transition='stroke-dashoffset '+t+'s ease-in-out';p.style.strokeDashoffset=0}function readout(){var I=info();$('bc').style.width=(I.Lc/8*100)+'%';$('bd').style.width=(I.Ld/8*100)+'%';$('ba').style.width=(100/8)+'%';$('vc').textContent=I.Lc;$('vd').textContent=I.Ld;$('rc').className='rw'+(mode=='c'?' a':'');$('rd').className='rw'+(mode=='d'?' a':'');$('tw').textContent=W[tg];$('dist').textContent=I.d}function setCap(t){$('cap').textContent=t}function finalCap(){var I=info();setCap('“'+W[tg]+'” is '+I.d+' word'+(I.d>1?'s':'')+' from “its”: '+I.Lc+' stacked layer'+(I.Lc>1?'s':'')+' with contiguous kernels (grows linearly), '+I.Ld+' with dilated kernels (grows logarithmically). The dashed violet arc previews the alternative: one direct link.')}function sync(){$('sl').value=tg<Q?tg:tg-1;$('slw').textContent=W[tg]}function T(f,ms){timers.push(setTimeout(f,ms))}function settle(){timers.forEach(clearTimeout);timers=[];[gT,gF,gP,ring,gC,arc].forEach(function(e){e.style.opacity=''});for(var l=1;l<=LM;l++)nodes[l].forEach(function(n){n.style.opacity='';n.classList.remove('on')})}function intro(){settle();draw(false);finalCap();if(RM)return;['bc','bd','ba'].forEach(function(i){$(i).style.width='0'});gT.style.opacity=0;for(var l=1;l<=LM;l++)nodes[l].forEach(function(n){n.style.opacity=0});[gF,gP,ring,gC,arc].forEach(function(e){e.style.opacity=0});setCap('Each word enters as a tile. “its” (amber) is the word we want to understand.');T(function(){gT.style.opacity=1},100);[1,2,3,4,5,6,7,8].forEach(function(l){T(function(){setCap('Each convolutional layer computes every position at once (green). Nothing waits on a previous word, unlike the RNN.');nodes[l].forEach(function(n){n.style.opacity='';n.classList.add('on')});T(function(){nodes[l].forEach(function(n){n.classList.remove('on')})},420)},800+(l-1)*220)});T(function(){var I=info();setCap('But each layer only sees its neighbours, so the signal from “'+W[tg]+'” has to climb '+I.L+' stacked layers (red) to reach “its”.');gF.style.opacity=1;gP.style.opacity=1;ring.style.opacity=1;dash(1.6);readout()},2800);T(function(){gC.style.opacity=1;arc.style.opacity=1;finalCap()},4600)}$('sl').addEventListener('input',function(){settle();var v=+this.value;tg=v<Q?v:v+1;sync();draw(true);finalCap()});function setMode(m){settle();mode=m;$('bC').className=m=='c'?'act':'';$('bD').className=m=='d'?'act':'';draw(true);finalCap()}$('bC').addEventListener('click',function(){setMode('c')});$('bD').addEventListener('click',function(){setMode('d')});$('rp').addEventListener('click',intro);sync();intro()})();</script>",
+        "explorables": [
+          {
+            "id": "stacked-layers",
+            "label": "Why stack layers?",
+            "blurb": "A kernel only covers a small window of neighbouring words. To connect two distant words, the signal has to pass up through several layers stacked on top of each other.",
+            "pages": [
+              7
+            ],
+            "quote": "A single convolutional layer with kernel width k < n does not connect all pairs of input and output positions."
+          },
+          {
+            "id": "dilated-kernels",
+            "label": "Contiguous vs dilated",
+            "blurb": "The shaded cone is what the top node for “its” can see. Contiguous kernels widen it by a fixed amount per layer, so reach grows linearly (O(n/k) layers). Dilated kernels skip positions, so reach grows exponentially and you need only O(log_k(n)) layers.",
+            "pages": [
+              7
+            ],
+            "quote": "Doing so requires a stack of O(n/k) convolutional layers in the case of contiguous kernels, or O(logk(n)) in the case of dilated convolutions [18], increasing the length of the longest paths between any two positions in the network."
+          },
+          {
+            "id": "path-length",
+            "label": "Path length",
+            "blurb": "The red path is the route a signal takes between the two words. The paper argues that longer paths make long-range dependencies harder to learn.",
+            "pages": [
+              6
+            ],
+            "quote": "The shorter these paths between any combination of positions in the input and output sequences, the easier it is to learn long-range dependencies"
+          },
+          {
+            "id": "complexity-table",
+            "label": "Table 1 path lengths",
+            "blurb": "Table 1 compares layer types by the maximum path length between two positions. Recurrent layers need O(n), convolutions need O(log_k(n)) with dilation, and self-attention needs O(1).",
+            "pages": [
+              6
+            ],
+            "quote": "As noted in Table 1, a self-attention layer connects all positions with a constant number of sequentially executed operations, whereas a recurrent layer requires O(n) sequential operations."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s3",
+      "index": 2,
+      "stage": "idea",
+      "title": "Let every word look directly at every other word",
+      "narration": "The Transformer drops recurrence and convolution entirely. With self-attention, \"its\" connects to \"Law\" in a single step. Every pair of words is one hop apart, and all the arcs are computed in parallel.",
+      "pages": [
+        2,
+        6
+      ],
+      "quote": "In this work we propose the Transformer, a model architecture eschewing recurrence and instead relying entirely on an attention mechanism to draw global dependencies between input and output.",
+      "diagram": {
+        "id": "s3",
+        "title": "Let every word look directly at every other word",
+        "caption": "The Transformer relies entirely on attention instead of recurrence or convolution (p. 2). A self-attention layer connects all positions with a constant number of sequential operations, while a recurrent layer needs O(n) (p. 6).",
+        "tryHint": "Try: click “application” or “The” to make it the query, then hover a far-away word to see that it is still one hop.",
+        "html": "<div id='sa-root' class='sa'><style>.sa{color:var(--ink,#1c1c1e);font:inherit}.sa svg{display:block;margin:0 auto}.sa-tile{cursor:pointer;outline:none}.sa-tile rect{fill:var(--node,#eef0f3);stroke:var(--line,#d9dce1);stroke-width:1.5;transition:fill .3s,stroke .3s}.sa-tile text{font-size:14px;fill:var(--ink,#1c1c1e);text-anchor:middle;dominant-baseline:central;pointer-events:none}.sa-tile:hover rect,.sa-tile:focus-visible rect{stroke:var(--accent,#e8772e)}.sa-tile.q rect{fill:var(--accent-soft,#fdecdc);stroke:var(--accent,#e8772e)}.sa-tile.h rect{stroke:#7a5cc7}.sa-arc{fill:none;stroke:#7a5cc7;stroke-linecap:round;stroke-dasharray:1}#sa-pairs .sa-arc{stroke-width:1;opacity:.13}#sa-pairs.tr{transition:opacity .4s}#sa-arcs{outline:none;cursor:pointer}#sa-arcs .sa-arc.h{stroke:var(--accent,#e8772e)}#sa-arcs:hover .sa-arc,#sa-arcs:focus-visible .sa-arc{stroke:var(--accent,#e8772e)}.sa-narr{min-height:2.8em;margin:10px 6px 6px;font-size:15px;line-height:1.4;text-align:center}.sa-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0}.sa-chip{font-size:13px;padding:5px 11px;border:1.5px solid var(--line,#d9dce1);border-radius:999px;color:var(--ink-2,#555);transition:background .3s,border-color .3s,color .3s;cursor:pointer;outline:none}.sa-chip.p{border-color:#7a5cc7}.sa-chip.g{border-color:#2e9a5a}.sa-chip.r{border-color:#cf4a3c}.sa-chip.on.p{background:#f1ecfb;color:#4b3591}.sa-chip.on.g{background:#e7f5ec;color:#1f6e40}.sa-chip.on.r{background:#fbeae8;color:#9b2f24}.sa-chip:hover,.sa-chip:focus-visible{border-color:var(--accent,#e8772e);background:var(--accent-soft,#fdecdc);color:var(--ink,#1c1c1e)}.sa-ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:8px 0 4px}.sa-btn{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--accent,#e8772e);background:var(--paper,#fff);color:var(--ink,#1c1c1e);cursor:pointer}.sa-btn[aria-pressed=true]{background:var(--accent-soft,#fdecdc)}.sa-note{font-size:12px;color:var(--ink-3,#888)}.sa-read{font-size:13px;color:var(--ink-2,#555);text-align:center;margin:4px 6px 0;min-height:2.8em;line-height:1.4}</style><svg id='sa-svg' width='100%' viewBox='0 0 760 300' role='img' aria-labelledby='sa-t'><title id='sa-t'>Self-attention: the query word its links to every other word in the sentence in one hop, all links computed in parallel</title><g id='sa-pairs'></g><g id='sa-arcs' data-explore='self-attention' tabindex='0' role='button' aria-label='Self-attention links: learn more'></g><g id='sa-tiles'></g></svg><p id='sa-narr' class='sa-narr'></p><div class='sa-chips'><span id='sa-c1' class='sa-chip p' data-explore='one-hop-path' tabindex='0' role='button' aria-label='Path length one hop: learn more'>Path length: <b>1 hop</b> · O(1)</span><span id='sa-c2' class='sa-chip g' data-explore='parallel-compute' tabindex='0' role='button' aria-label='Parallel computation: learn more'>Sequential ops: <b>O(1)</b> · all links at once</span><span id='sa-c3' class='sa-chip r' data-explore='quadratic-cost' tabindex='0' role='button' aria-label='Quadratic cost: learn more'>Cost: 13 × 13 = <b>169</b> pair scores · O(n²·d)</span></div><div class='sa-ctrl'><button id='sa-mode' class='sa-btn' aria-pressed='false'>Show all pairs</button><button id='sa-rep' class='sa-btn'>↻ Replay</button><span class='sa-note'>Click a word to make it the query · arc thickness = illustrative weights</span></div><p id='sa-read' class='sa-read' aria-live='polite'></p><script>(function(){var W=['The','Law','will','never','be','perfect',',','but','its','application','should','be','just'];var PRE=[0.02,0.5,0.01,0.01,0.01,0.02,0.01,0.03,0.08,0.27,0.02,0.01,0.01];var NS='http://www.w3.org/2000/svg';var root=document.getElementById('sa-root'),svg=document.getElementById('sa-svg'),gP=document.getElementById('sa-pairs'),gA=document.getElementById('sa-arcs'),gT=document.getElementById('sa-tiles'),narr=document.getElementById('sa-narr'),read=document.getElementById('sa-read'),bm=document.getElementById('sa-mode'),br=document.getElementById('sa-rep'),C=[document.getElementById('sa-c1'),document.getElementById('sa-c2'),document.getElementById('sa-c3')];var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;var q=8,mode='query',vert=false,pos=[],tiles=[],arcs=[],hov=-1,anim=false,raf=0,t0=0;function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e}function cl(v){return v<0?0:v>1?1:v}function lq(s){return '\\u201c'+s+'\\u201d'}function layout(){var cw=root.clientWidth||760;vert=cw<700;pos=[];var ws=W.map(function(w){return Math.max(24,w.length*8.2+16)});if(!vert){var tot=0;ws.forEach(function(w){tot+=w});tot+=5*12;var x=(760-tot)/2;for(var i=0;i<13;i++){pos.push({x:x,y:250,w:ws[i],h:30,ax:x+ws[i]/2,ay:246});x+=ws[i]+5}svg.setAttribute('viewBox','0 0 760 296');svg.style.maxWidth=''}else{var R=132;for(var j=0;j<13;j++){var y=12+j*32;pos.push({x:R-ws[j],y:y,w:ws[j],h:26,ax:R+4,ay:y+13})}svg.setAttribute('viewBox','0 0 360 '+(12+13*32+6));svg.style.maxWidth='440px'}}function arcD(i,j){var a=pos[i],b=pos[j],h;if(!vert){h=Math.min(24+Math.abs(b.ax-a.ax)*0.42,290);return 'M'+a.ax+' '+a.ay+' C'+a.ax+' '+(a.ay-h)+' '+b.ax+' '+(b.ay-h)+' '+b.ax+' '+b.ay}h=Math.min(20+Math.abs(b.ay-a.ay)*0.55,285);return 'M'+a.ax+' '+a.ay+' C'+(a.ax+h)+' '+a.ay+' '+(b.ax+h)+' '+b.ay+' '+b.ax+' '+b.ay}function weights(qi){if(qi===8)return PRE.slice();var w=[],s=0;for(var k=0;k<13;k++){var v=k===qi?0:Math.exp(-Math.abs(qi-k)/2.2)*(0.4+((k*7+qi*5)%6)/6);w.push(v);s+=v}return w.map(function(v){return v/s})}function build(){gP.innerHTML='';gA.innerHTML='';gT.innerHTML='';tiles=[];arcs=[];for(var i=0;i<13;i++)for(var j=i+1;j<13;j++){gP.appendChild(el('path',{d:arcD(i,j),'class':'sa-arc',pathLength:1}))}for(var k=0;k<13;k++){var p=el('path',{'class':'sa-arc',pathLength:1});gA.appendChild(p);arcs.push(p)}W.forEach(function(w,i){var P=pos[i];var g=el('g',{'class':'sa-tile',tabindex:0,role:'button','aria-label':'Make '+w+' the query'});g.appendChild(el('rect',{x:P.x,y:P.y,width:P.w,height:P.h,rx:8}));var t=el('text',{x:P.x+P.w/2,y:P.y+P.h/2});t.textContent=w;g.appendChild(t);g.addEventListener('click',function(){pick(i)});g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(i)}});g.addEventListener('mouseenter',function(){hover(i)});g.addEventListener('mouseleave',function(){hover(-1)});g.addEventListener('focus',function(){hover(i)});g.addEventListener('blur',function(){hover(-1)});gT.appendChild(g);tiles.push(g)})}function upArcs(){var w=weights(q);arcs.forEach(function(p,k){if(k===q){p.style.display='none';return}p.style.display='';p.setAttribute('d',arcD(q,k));p.setAttribute('stroke-width',(0.8+w[k]*9).toFixed(2));p.style.opacity=hov<0||hov===k?(0.35+Math.min(1,w[k]*3)*0.6).toFixed(2):'0.2';p.classList.toggle('h',k===hov)})}function upTiles(){tiles.forEach(function(g,i){g.classList.toggle('q',i===q);g.classList.toggle('h',i===hov&&i!==q)})}function readout(){if(anim)return;var qs=lq(W[q]);if(hov>=0&&hov!==q){var d=Math.abs(hov-q);read.textContent=qs+' \\u2192 '+lq(W[hov])+': '+d+' position'+(d>1?'s':'')+' apart, still 1 hop. A recurrent layer would pass the signal through about '+d+' sequential step'+(d>1?'s':'')+'.'}else if(mode==='all'){read.textContent='Showing all 78 word pairs (faint). Each pair is connected directly: one hop, whatever the distance.'}else{read.textContent='Query '+qs+': 12 links, all 1 hop. Hover or focus another word to compare distances.'}}function hover(i){hov=i;if(!anim){upArcs();upTiles();readout()}}function setNarr(s){if(narr.textContent!==s)narr.textContent=s}var FINAL='Click any word to make it the query. Next: how does '+lq('its')+' decide which links get the most weight?';function pick(i){if(anim)finish();q=i;upArcs();upTiles();readout()}function chips(a,b,c){C[0].classList.toggle('on',a);C[1].classList.toggle('on',b);C[2].classList.toggle('on',c)}function frame(t){tiles.forEach(function(g,i){g.style.opacity=cl((t-i*45)/300)});tiles[q].classList.toggle('q',t>700);var p1=cl((t-1300)/900),p2=cl((t-2500)/900);arcs.forEach(function(p,k){if(k===q)return;p.style.strokeDashoffset=1-(k===1?p1:p2)});gP.style.opacity=cl((t-3700)/800)*(1-cl((t-5000)/600));if(t<700)setNarr('The Transformer drops recurrence and convolution entirely.');else if(t<1300)setNarr('Take the query word '+lq('its')+'. Which word does it point back to?');else if(t<2500)setNarr('Self-attention links '+lq('its')+' straight to '+lq('Law')+' in a single step.');else if(t<3700)setNarr('Links to every other word are computed at the same time, in parallel.');else setNarr('Every word does the same: all 78 pairs are one hop apart.');chips(t>1300,t>2500&&t<3900,t>3700)}function step(now){var t=now-t0;frame(t);if(t<5700)raf=requestAnimationFrame(step);else finish()}function finish(){anim=false;cancelAnimationFrame(raf);gP.classList.add('tr');tiles.forEach(function(g){g.style.opacity=1});arcs.forEach(function(p){p.style.strokeDashoffset=0});gP.style.opacity=mode==='all'?1:0;setNarr(FINAL);chips(true,false,mode==='all');upArcs();upTiles();readout()}function start(){cancelAnimationFrame(raf);hov=-1;q=8;upArcs();upTiles();if(reduce){finish();return}anim=true;gP.classList.remove('tr');read.textContent='';frame(0);t0=performance.now();raf=requestAnimationFrame(step)}bm.addEventListener('click',function(){if(anim)finish();mode=mode==='all'?'query':'all';bm.setAttribute('aria-pressed',mode==='all');bm.textContent=mode==='all'?'Hide all pairs':'Show all pairs';gP.style.opacity=mode==='all'?1:0;C[2].classList.toggle('on',mode==='all');readout()});br.addEventListener('click',start);var lastV=null;function refresh(){layout();build();upArcs();upTiles()}window.addEventListener('resize',function(){var nv=(root.clientWidth||760)<700;if(nv!==vert){var wasAnim=anim;refresh();if(!wasAnim)finish();else frame(performance.now()-t0)}});refresh();start()})();</script></div>",
+        "explorables": [
+          {
+            "id": "self-attention",
+            "label": "Self-attention",
+            "blurb": "Each violet arc is a direct link from the query word to another word in the same sentence. The layer builds each word's new representation by mixing in information from all the others according to these link strengths.",
+            "pages": [
+              2,
+              5
+            ],
+            "quote": "Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence."
+          },
+          {
+            "id": "one-hop-path",
+            "label": "One-hop path length",
+            "blurb": "Any two words are joined by a single attention step, however far apart they are. A recurrent layer needs a chain of O(n) steps, and shorter paths make long-range dependencies easier to learn.",
+            "pages": [
+              6
+            ],
+            "quote": "As noted in Table 1, a self-attention layer connects all positions with a constant number of sequentially executed operations, whereas a recurrent layer requires O(n) sequential operations."
+          },
+          {
+            "id": "parallel-compute",
+            "label": "Computed in parallel",
+            "blurb": "No link has to wait for an earlier one, so all words are processed at once instead of one step at a time. This is why the base model reached state-of-the-art translation after about 12 hours on 8 GPUs.",
+            "pages": [
+              2,
+              7
+            ],
+            "quote": "The Transformer allows for significantly more parallelization and can reach a new state of the art in translation quality after being trained for as little as twelve hours on eight P100 GPUs."
+          },
+          {
+            "id": "quadratic-cost",
+            "label": "The n² cost",
+            "blurb": "Linking every pair means n × n scores, giving O(n²·d) work per layer. This is cheaper than recurrence when the sentence length n is below the model dimension d. For very long inputs, the authors suggest restricting attention to a local neighborhood.",
+            "pages": [
+              6,
+              7
+            ],
+            "quote": "To improve computational performance for tasks involving very long sequences, self-attention could be restricted to considering only a neighborhood of size r in the input sequence centered around the respective output position."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "index": 3,
+      "stage": "method",
+      "title": "Attention is a soft lookup: query, keys, values",
+      "narration": "\"its\" sends out a query and every word offers a key and a value. The model takes query-key dot products, divides them by the square root of the key size, and applies a softmax. The resulting weights blend the values.",
+      "pages": [
+        3,
+        4
+      ],
+      "quote": "An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors.",
+      "diagram": {
+        "id": "s4",
+        "title": "Attention is a soft lookup: query, keys, values",
+        "caption": "Scaled dot-product attention compares the query “its” with every key, divides each dot product by √dk, and applies a softmax. The resulting weights average the values (pp. 3–4). Each head uses dk = 64, and without the scaling, large dot products saturate the softmax (p. 4).",
+        "tryHint": "Try: untick “Scale by 1/√dk” and drag the key size up to 512 to watch the softmax collapse onto one word.",
+        "html": "<style>#cu4{font-family:inherit;color:var(--ink,#1b1b1f);background:var(--paper,#fff)}#cu4 svg{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}#cu4 svg text{font-size:19px;fill:var(--ink,#1b1b1f)}#cu4 svg .t2{fill:var(--ink-2,#555)}#cu4 .hit{fill:transparent;stroke:transparent;stroke-width:1.5;transition:fill .2s,stroke .2s}#cu4 [data-explore]{cursor:pointer;outline:none}#cu4 [data-explore]:hover .hit,#cu4 [data-explore]:focus-visible .hit{fill:var(--accent-soft,#fdebdc);stroke:var(--accent,#e8710a)}#cu4 .ctl{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:center;font-size:14px;color:var(--ink-2,#555);margin-top:10px}#cu4 .ctl label{display:flex;align-items:center;gap:8px}#cu4 input[type=range]{accent-color:var(--accent,#e8710a);width:150px}#cu4 input[type=checkbox]{accent-color:var(--accent,#e8710a);width:16px;height:16px}#cu4 button{font:inherit;font-size:13px;border:1.5px solid var(--line,#ddd);background:var(--paper,#fff);color:var(--ink,#1b1b1f);border-radius:999px;padding:4px 12px;cursor:pointer}#cu4 button:hover,#cu4 button:focus-visible{border-color:var(--accent,#e8710a);color:var(--accent,#e8710a)}#cu4 .note{font-size:12px;color:var(--ink-3,#888);text-align:center;margin:6px auto 0;max-width:560px}</style><div id='cu4'><svg viewBox='0 0 520 652' role='img' aria-labelledby='cu4t'><title id='cu4t'>Attention is a soft lookup. The query word its is compared with the key of every word. The scores are scaled, passed through a softmax, and the resulting weights blend the values.</title><text id='cu4step' x='8' y='24' style='font-size:20px;font-weight:600'></text><g id='cu4arcs'></g><g id='cu4q' data-explore='query-tile' tabindex='0' role='button' aria-label='Query: the word its'><rect class='hit' x='2' y='254' width='102' height='70' rx='8'/><text class='t2' x='53' y='276' text-anchor='middle'>query</text><rect x='8' y='286' width='90' height='30' rx='8' fill='#FBE3A6' stroke='#C98A0B' stroke-width='1.5'/><text x='53' y='307' text-anchor='middle' style='font-weight:600'>its</text></g><g data-explore='key-tiles' tabindex='0' role='button' aria-label='Keys: every word offers a key and a value'><rect class='hit' x='144' y='40' width='130' height='482' rx='8'/><text class='t2' x='210' y='72' text-anchor='middle'>keys</text><g id='cu4kt'></g></g><g id='cu4sg' data-explore='scale-factor' tabindex='0' role='button' aria-label='Scaling the dot products by one over square root of dk'><rect class='hit' x='274' y='34' width='68' height='488' rx='8'/><text class='t2' x='308' y='52' text-anchor='middle'>q·k</text><text id='cu4sh' class='t2' x='308' y='72' text-anchor='middle'>÷ √dk</text></g><g id='cu4wg' data-explore='softmax-weights' tabindex='0' role='button' aria-label='Softmax weights'><rect class='hit' x='342' y='34' width='176' height='488' rx='8'/><text class='t2' x='348' y='72'>softmax weight</text></g><g data-explore='output-blend' tabindex='0' role='button' aria-label='Output: weighted blend of the values'><rect class='hit' x='2' y='538' width='516' height='76' rx='8'/><text class='t2' x='8' y='562'>output = Σ weight × value</text><clipPath id='cu4cp'><rect id='cu4clip' x='8' y='570' width='504' height='40' rx='6'/></clipPath><rect x='8' y='574' width='504' height='32' rx='6' style='fill:none;stroke:var(--line,#d9dce1);stroke-width:1.5'/><g id='cu4bs' clip-path='url(#cu4cp)'></g></g><text id='cu4stat' class='t2' x='8' y='640'></text></svg><div class='ctl'><label>Key size d<sub>k</sub><input type='range' id='cu4dk' min='0' max='5' step='1' value='3' aria-label='Key size dk'><b id='cu4dkv'>64</b></label><label><input type='checkbox' id='cu4sc' checked> Scale by 1/√d<sub>k</sub></label><button id='cu4rp' type='button'>↻ Replay</button></div><div class='note'>Scores are illustrative (unit-scale q·k per word). Unscaled q·k is modeled as growing like √dk because its variance is dk (p. 4). The paper uses dk = 64 per head.</div></div><script>(function(){var R=document.getElementById('cu4');if(!R)return;var NS='http://www.w3.org/2000/svg';function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}var W=['The','Law','will','never','be','perfect',',','but','its','application','should','be','just'];var S=[0.2,2.6,0.1,-0.3,0,0.4,-0.8,-0.2,0.9,1.9,0,-0.1,0.3];var DK=[1,4,16,64,256,512];function $(id){return R.querySelector('#'+id);}var AG=$('cu4arcs'),KG=$('cu4kt'),SG=$('cu4sg'),WG=$('cu4wg'),BG=$('cu4bs'),CL=$('cu4clip'),ST=$('cu4step'),SS=$('cu4stat'),SH=$('cu4sh'),QG=$('cu4q');var y0=84,rh=34,qy=301,arcs=[],L=[],sc=[],bars=[],pc=[];for(var i=0;i<W.length;i++){var cy=y0+i*rh+13;arcs.push(el('path',{d:'M98 '+qy+' C126 '+qy+' 122 '+cy+' 150 '+cy,fill:'none',stroke:'#7B5EA7','stroke-linecap':'round'},AG));var me=i===8;el('rect',{x:150,y:cy-13,width:120,height:26,rx:7,style:me?'fill:#FDF1D3;stroke:#C98A0B;stroke-width:1.5':'fill:var(--node,#eef0f3);stroke:var(--line,#d9dce1);stroke-width:1.5'},KG);var t=el('text',{x:210,y:cy+6,'text-anchor':'middle'},KG);t.textContent=W[i];sc.push(el('text',{x:334,y:cy+6,'text-anchor':'end','class':'t2'},SG));el('rect',{x:348,y:cy-6,width:110,height:12,rx:6,style:'fill:var(--line,#e3e5ea)'},WG);bars.push(el('rect',{x:348,y:cy-6,width:0,height:12,rx:6,fill:'#7B5EA7'},WG));pc.push(el('text',{x:514,y:cy+6,'text-anchor':'end'},WG));}arcs.forEach(function(a){var l=80;try{l=a.getTotalLength()||80;}catch(e){}L.push(l);a.style.strokeDasharray=l;});var dki=3,scaled=true,raf=0,t0=0,D=[700,1100,1000,1100,1000];var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;function fr(r){return r%1?r.toFixed(1):String(r);}function calc(){var r=Math.sqrt(DK[dki]);var raw=S.map(function(s){return s*r;});var fin=scaled?S.slice():raw;var m=Math.max.apply(null,fin);var e=fin.map(function(f){return Math.exp(f-m);});var z=e.reduce(function(a,b){return a+b;},0);return{r:r,raw:raw,fin:fin,w:e.map(function(x){return x/z;})};}function pct(w){return w<0.005?'<1%':Math.round(w*100)+'%';}function render(p,k){var c=calc();var steps=['1 · “its” sends out a query','2 · Dot product with every key','3 · Divide each score by √dk = '+fr(c.r),'4 · Softmax turns scores into weights','5 · The weights blend the values'];ST.textContent=k>=0?steps[k]:'dk = '+DK[dki]+(scaled?' · scores ÷ √'+DK[dki]+' = '+fr(c.r):' · no scaling (raw q·k)');KG.style.opacity=p[0];QG.style.opacity=0.3+0.7*p[0];for(var i=0;i<W.length;i++){var w=c.w[i];var s=c.raw[i]+(c.fin[i]-c.raw[i])*p[2];sc[i].textContent=s.toFixed(1);sc[i].style.opacity=p[1];arcs[i].style.strokeDashoffset=L[i]*(1-p[1]);arcs[i].style.strokeWidth=1.5+(0.6+7.5*w-1.5)*p[3];arcs[i].style.opacity=0.35+(0.2+0.8*w-0.35)*p[3];bars[i].setAttribute('width',110*w*p[3]);pc[i].textContent=pct(w);pc[i].style.opacity=p[3];}SH.textContent=scaled?'÷ √dk':'(raw)';while(BG.firstChild)BG.removeChild(BG.firstChild);var x=8;for(i=0;i<W.length;i++){var ww=504*c.w[i];if(ww<0.3){x+=ww;continue;}el('rect',{x:x,y:574,width:ww,height:32,fill:i%2?'#9A82C4':'#6C4FA0'},BG);if(ww>W[i].length*10.5+12){var tt=el('text',{x:x+ww/2,y:596,'text-anchor':'middle',style:'fill:#fff;font-weight:600'},BG);tt.textContent=W[i];}x+=ww;}CL.setAttribute('width',504*p[4]);var mx=Math.max.apply(null,c.w);if(k>=0){SS.textContent='';}else if(!scaled&&mx>0.97){SS.textContent='Saturated softmax → extremely small gradients';SS.style.fill='#C0392B';}else if(!scaled&&DK[dki]>1){SS.textContent='Unscaled scores grow with dk; weights sharpen';SS.style.fill='#C0392B';}else{SS.textContent='One head = one blend. Next: 8 heads at once.';SS.style.fill='';}}var F=[1,1,1,1,1];function frame(ts){if(!t0)t0=ts;var t=ts-t0,acc=0,p=[],k=0;for(var i=0;i<5;i++){var q=Math.max(0,Math.min(1,(t-acc)/D[i]));p.push(q<0.5?2*q*q:1-Math.pow(-2*q+2,2)/2);if(t>=acc)k=i;acc+=D[i];}if(t>=acc+500){render(F,-1);return;}render(p,k);raf=requestAnimationFrame(frame);}function start(){cancelAnimationFrame(raf);if(reduce){render(F,-1);return;}t0=0;render([0,0,0,0,0],0);raf=requestAnimationFrame(frame);}function settle(){cancelAnimationFrame(raf);render(F,-1);}$('cu4dk').addEventListener('input',function(){dki=+this.value;$('cu4dkv').textContent=DK[dki];settle();});$('cu4sc').addEventListener('change',function(){scaled=this.checked;settle();});$('cu4rp').addEventListener('click',start);start();})();</script>",
+        "explorables": [
+          {
+            "id": "query-tile",
+            "label": "The query",
+            "blurb": "The word doing the looking, here “its”, is turned into a query vector. That vector is compared against every word's key to decide where to look.",
+            "pages": [
+              3
+            ],
+            "quote": "An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors."
+          },
+          {
+            "id": "key-tiles",
+            "label": "Keys and dot products",
+            "blurb": "Each word offers a key, and a query–key dot product measures how well the two match. All the dot products for a sentence come out of a single matrix multiplication, which is why this method is fast.",
+            "pages": [
+              4
+            ],
+            "quote": "dot-product attention is much faster and more space-efficient in practice, since it can be implemented using highly optimized matrix multiplication code."
+          },
+          {
+            "id": "scale-factor",
+            "label": "Dividing by √dk",
+            "blurb": "When the components have unit variance, a dot product over dk dimensions has variance dk, so raw scores grow with the key size. Dividing by √dk keeps the scores in a range where the softmax still has useful gradients.",
+            "pages": [
+              4
+            ],
+            "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+          },
+          {
+            "id": "softmax-weights",
+            "label": "Softmax weights",
+            "blurb": "The softmax turns the scaled scores into positive weights that sum to 1. The lookup is soft: every word gets some share, and the best matches get most of it.",
+            "pages": [
+              4
+            ],
+            "quote": "We compute the dot products of the query with all keys, divide each by √dk, and apply a softmax function to obtain the weights on the values."
+          },
+          {
+            "id": "output-blend",
+            "label": "Weighted sum of values",
+            "blurb": "The output for “its” is a weighted average of all the value vectors. In this illustration, most of the mix comes from “Law” and “application”.",
+            "pages": [
+              3,
+              4
+            ],
+            "quote": "The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "index": 5,
+      "stage": "method",
+      "title": "Sine waves stamp word order onto the tiles",
+      "narration": "Attention alone ignores word order, so each tile gets a sinusoidal position signal added to its embedding. These tiles flow through six encoder layers and six decoder layers, and masking stops the decoder from peeking at future words.",
+      "pages": [
+        3,
+        5,
+        6
+      ],
+      "quote": "Since our model contains no recurrence and no convolution, in order for the model to make use of the order of the sequence, we must inject some information about the relative or absolute position of the tokens in the sequence.",
+      "diagram": {
+        "id": "s6",
+        "title": "Sine waves stamp word order onto the tiles",
+        "caption": "The Transformer has no recurrence or convolution, so a sinusoidal position signal is added to each word embedding (p. 6). The tiles then pass through 6 encoder and 6 decoder layers, and masking keeps the decoder from seeing later words (p. 3, 5).",
+        "tryHint": "Try: drag the position slider and watch each sine wave give that position its own pattern of values.",
+        "html": "<style>.pe6{color:var(--ink,#1a1a1a);background:var(--paper,#fff);font:inherit}.pe6 svg{display:block;width:100%;height:auto}.pe6 text{font-family:inherit;fill:var(--ink,#1a1a1a)}.pe6 .t2{fill:var(--ink-2,#555)}.pe6 .t3{fill:var(--ink-3,#777)}.pe6 .tg{fill:#2e7d4f}.pe6-ctrl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:10px;font-size:14px;color:var(--ink,#1a1a1a)}.pe6-ctrl input[type=range]{accent-color:var(--accent,#e8710a);width:190px;max-width:100%}.pe6-btn{border:1px solid var(--line,#ddd);background:var(--paper,#fff);color:var(--ink,#1a1a1a);border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer}.pe6-btn:hover{border-color:var(--accent,#e8710a)}.pe6 [data-explore]{cursor:pointer;outline:none}.pe6 [data-explore] .hit{fill:transparent;stroke:transparent;stroke-width:1.5}.pe6 [data-explore]:hover .hit,.pe6 [data-explore]:focus-visible .hit{fill:var(--accent-soft,#fdebd9);fill-opacity:.55;stroke:var(--accent,#e8710a)}.pe6 span[data-explore]{border:1px dashed var(--line,#ccc);border-radius:6px;padding:2px 8px}.pe6 span[data-explore]:hover,.pe6 span[data-explore]:focus-visible{outline:1.5px solid var(--accent,#e8710a);background:var(--accent-soft,#fdebd9)}</style><div class='pe6' id='pe6'><svg viewBox='0 0 480 640' role='img' aria-labelledby='pe6-t'><title id='pe6-t'>Sine waves stamp word order onto the tiles. Each word tile gets a sinusoidal position signal added, then the tiles flow through six encoder and six decoder layers, with a mask in the decoder.</title><text x='240' y='24' text-anchor='middle' font-size='19' font-weight='600'>Sine waves stamp word order onto the tiles</text><g id='pe6-tiles'></g><g id='pe6-fp' data-explore='add-to-embedding' tabindex='0' role='button' aria-label='Position signal added to each embedding'><rect class='hit' x='8' y='80' width='464' height='114' rx='8'/></g><g id='pe6-wv' data-explore='sinusoid-formula' tabindex='0' role='button' aria-label='Sinusoidal positional encoding formula'><rect class='hit' x='8' y='194' width='464' height='234' rx='8'/><g id='pe6-wvh'><text x='240' y='214' text-anchor='middle' font-size='17'>One sine wave per dimension</text><text x='240' y='234' text-anchor='middle' font-size='15' class='t3'>illustrative: d = 16 (paper uses d_model = 512)</text></g></g><text id='pe6-par' x='14' y='440' font-size='15' class='tg'>all tiles go through the layers in parallel</text><rect id='pe6-dec' x='262' y='452' width='204' height='148' rx='10' fill='none' stroke='var(--line,#d9dce1)' stroke-width='1.5'/><g id='pe6-st' data-explore='encoder-decoder-stack' tabindex='0' role='button' aria-label='Six encoder and six decoder layers'><rect class='hit' x='14' y='452' width='200' height='148' rx='10'/><rect class='hit' x='266' y='482' width='100' height='108' rx='6'/><rect x='14' y='452' width='200' height='148' rx='10' fill='none' stroke='var(--line,#d9dce1)' stroke-width='1.5'/><text x='114' y='476' text-anchor='middle' font-size='17'>Encoder ×6</text><text x='364' y='476' text-anchor='middle' font-size='17'>Decoder ×6</text><g id='pe6-layers'></g><g id='pe6-arr' fill='none' stroke='var(--ink-2,#555)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M218 530 H256'/><path d='M250 525 L257 530 L250 535'/></g></g><g id='pe6-mk' data-explore='causal-mask' tabindex='0' role='button' aria-label='Decoder mask hides future words'><rect class='hit' x='370' y='484' width='88' height='108' rx='6'/><g id='pe6-cells'></g><text x='413' y='584' text-anchor='middle' font-size='17'>mask</text></g><text id='pe6-out' x='466' y='626' text-anchor='end' font-size='15' class='t2'>then predicts the translation, word by word</text></svg><div class='pe6-ctrl'><label for='pe6-s'>Position <b>pos</b></label><input id='pe6-s' type='range' min='0' max='20' step='1' value='8' aria-label='Position pos'><span id='pe6-r' data-explore='relative-offset' tabindex='0' role='button' aria-label='Relative positions via fixed offsets'>pos 8 → “its”</span><button class='pe6-btn' id='pe6-b' type='button'>Replay</button></div></div><script>(function(){var NS='http://www.w3.org/2000/svg';var root=document.getElementById('pe6');var svg=root.querySelector('svg');function $(id){return document.getElementById(id)}function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e}function cl(x){return x<0?0:x>1?1:x}function ez(x){x=cl(x);return x*x*(3-2*x)}var Wl=[1,Math.pow(10000,2/16),Math.pow(10000,4/16),Math.pow(10000,6/16)];function pe(p){var v=[];for(var i=0;i<4;i++){v.push(Math.sin(p/Wl[i]),Math.cos(p/Wl[i]))}return v}var SENT=['The','Law','will','never','be','perfect',',','but','its','application','should','be','just'];var words=['The','Law','will','…','but','its'],poss=[0,1,2,null,7,8];var tg=$('pe6-tiles'),fp=$('pe6-fp'),tiles=[],bars=[],fades=[];words.forEach(function(w,i){var x=14+77*i,cx=x+33,its=w==='its';var g=el('g',{},tg);var r=el('rect',{x:x,y:42,width:66,height:34,rx:8,fill:its?'#fbe7b5':'var(--node,#eef0f3)',stroke:its?'#c9921f':'var(--line,#d9dce1)','stroke-width':1.5},g);var t=el('text',{x:cx,y:65,'text-anchor':'middle','font-size':17},g);t.textContent=w;tiles.push({g:g,r:r,its:its,p:poss[i]});var pl=el('text',{x:cx,y:95,'text-anchor':'middle','font-size':17,'class':'t2'},fp);pl.textContent='+';fades.push(pl);var lb=el('text',{x:cx,y:184,'text-anchor':'middle','font-size':15,'class':'t3'},fp);lb.textContent=poss[i]===null?'pos 3–6':'pos '+poss[i];fades.push(lb);if(poss[i]===null){var e=el('text',{x:cx,y:138,'text-anchor':'middle','font-size':17,'class':'t3'},fp);e.textContent='⋯';fades.push(e);return}var hl=el('line',{x1:cx,x2:cx,y1:102,y2:162,stroke:'var(--line,#d9dce1)','stroke-width':1},fp);fades.push(hl);pe(poss[i]).forEach(function(v,k){var b=el('rect',{x:cx,y:104+k*7,width:0,height:5,rx:1.5,fill:its?'#c9921f':'var(--ink-2,#666)'},fp);bars.push({r:b,v:v,cx:cx})})});var wv=$('pe6-wv'),X=function(p){return 58+p*408/20},cys=[268,306,344,382],waves=[],dots=[];cys.forEach(function(cy,i){var l=el('text',{x:14,y:cy+6,'font-size':15,'class':'t3'},wv);l.textContent='i='+i;fades.push(l);var d='';for(var s=0;s<=160;s++){var p=20*s/160;d+=(s?'L':'M')+X(p).toFixed(1)+' '+(cy-14*Math.sin(p/Wl[i])).toFixed(1)}var pa=el('path',{d:d,fill:'none',stroke:'var(--ink-2,#666)','stroke-width':1.5,'stroke-linecap':'round',pathLength:1,'stroke-dasharray':1},wv);waves.push(pa)});var ax=el('line',{x1:58,x2:466,y1:402,y2:402,stroke:'var(--line,#d9dce1)','stroke-width':1.5},wv);[0,1,2,7,8].forEach(function(p){el('line',{x1:X(p),x2:X(p),y1:402,y2:407,stroke:'var(--ink-3,#999)','stroke-width':1},wv)});[['0',58,'start'],['pos',262,'middle'],['20',466,'end']].forEach(function(a){var t=el('text',{x:a[1],y:421,'text-anchor':a[2],'font-size':15,'class':'t3'},wv);t.textContent=a[0]});var cur=el('line',{x1:0,x2:0,y1:248,y2:402,stroke:'var(--accent,#e8710a)','stroke-width':1.5,'stroke-linecap':'round'},wv);cys.forEach(function(){dots.push(el('circle',{r:4,cx:0,cy:0,fill:'var(--accent,#e8710a)'},wv))});var lg=$('pe6-layers'),layers=[];for(var i=0;i<6;i++){var y=488+17*i;layers.push([el('rect',{x:34,y:y,width:160,height:10,rx:3,fill:'var(--node,#eef0f3)',stroke:'var(--line,#d9dce1)','stroke-width':1},lg),el('rect',{x:276,y:y,width:84,height:10,rx:3,fill:'var(--node,#eef0f3)',stroke:'var(--line,#d9dce1)','stroke-width':1},lg)])}var cg=$('pe6-cells'),cells=[];for(var r=0;r<5;r++)for(var c=0;c<5;c++){cells.push(el('rect',{x:378+14*c,y:490+14*r,width:12,height:12,rx:2,fill:c<=r?'#c9cdd4':'#f5d0cc'},cg))}var sl=$('pe6-s'),ro=$('pe6-r'),END=5.4,raf=0,t0=0;function setPos(p){var x=X(p);cur.setAttribute('x1',x);cur.setAttribute('x2',x);dots.forEach(function(d,i){d.setAttribute('cx',x);d.setAttribute('cy',cys[i]-14*Math.sin(p/Wl[i]))});var n=Math.round(p);tiles.forEach(function(o){var m=o.p===null?(n>=3&&n<=6):o.p===n;o.r.setAttribute('stroke',m?'var(--accent,#e8710a)':(o.its?'#c9921f':'var(--line,#d9dce1)'));o.r.setAttribute('stroke-width',m?2.2:1.5)});ro.textContent='pos '+n+' → '+(n<SENT.length?'“'+SENT[n]+'”':'past this sentence')}function render(t){tiles.forEach(function(o,i){o.g.style.opacity=cl((t-i*0.08)/0.5)});var s=ez((t-0.8)/0.9);bars.forEach(function(b){var w=Math.abs(b.v)*28*s;b.r.setAttribute('width',w);b.r.setAttribute('x',b.v>=0?b.cx:b.cx-w)});fades.forEach(function(f){f.style.opacity=s});var w=ez((t-1.7)/1.0);waves.forEach(function(p){p.style.strokeDashoffset=1-w});$('pe6-wvh').style.opacity=cl((t-1.5)/0.4);ax.style.opacity=cl((t-1.5)/0.4);var co=cl((t-2.7)/0.3);cur.style.opacity=co;dots.forEach(function(d){d.style.opacity=co});setPos(t>=END?+sl.value:8*ez((t-2.7)/0.9));var so=cl((t-3.6)/0.4);$('pe6-st').style.opacity=so;$('pe6-dec').style.opacity=so;$('pe6-par').style.opacity=so;layers.forEach(function(l,i){var o=cl((t-3.8-i*0.1)/0.25);l[0].style.opacity=o;l[1].style.opacity=o});$('pe6-arr').style.opacity=cl((t-4.4)/0.3);$('pe6-mk').style.opacity=cl((t-4.5)/0.3);cells.forEach(function(c,k){c.style.opacity=cl((t-4.6-k*0.025)/0.2)});$('pe6-out').style.opacity=cl((t-5.0)/0.4)}function tick(now){if(!t0)t0=now;var t=(now-t0)/1000;render(t);if(t<END)raf=requestAnimationFrame(tick);else raf=0}function play(){cancelAnimationFrame(raf);sl.value=8;if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){render(99);return}t0=0;raf=requestAnimationFrame(tick)}sl.addEventListener('input',function(){if(raf){cancelAnimationFrame(raf);raf=0;render(99)}setPos(+sl.value)});$('pe6-b').addEventListener('click',play);play()})();</script>",
+        "explorables": [
+          {
+            "id": "sinusoid-formula",
+            "label": "Sine waves per dimension",
+            "blurb": "Each dimension of the position signal is a sine or cosine wave, and each pair of dimensions uses a slower frequency than the one before. Taken together, the values at a given position form a pattern that no other position shares.",
+            "pages": [
+              6
+            ],
+            "quote": "where pos is the position and i is the dimension. That is, each dimension of the positional encoding corresponds to a sinusoid. The wavelengths form a geometric progression from 2π to 10000 · 2π."
+          },
+          {
+            "id": "add-to-embedding",
+            "label": "Added, not appended",
+            "blurb": "The position signal has the same size as the word embedding (512 in the paper), so the two are added together. Each tile then carries both what the word is and where it sits.",
+            "pages": [
+              6
+            ],
+            "quote": "To this end, we add \"positional encodings\" to the input embeddings at the bottoms of the encoder and decoder stacks. The positional encodings have the same dimension dmodel as the embeddings, so that the two can be summed."
+          },
+          {
+            "id": "relative-offset",
+            "label": "Relative positions",
+            "blurb": "The authors picked sinusoids because the signal at a shifted position is a linear function of the signal at the original position. They expected this to make relative offsets easy to learn. Learned position embeddings gave nearly identical results.",
+            "pages": [
+              6,
+              9
+            ],
+            "quote": "We chose this function because we hypothesized it would allow the model to easily learn to attend by relative positions, since for any fixed offset k, PEpos+k can be represented as a linear function of PEpos."
+          },
+          {
+            "id": "encoder-decoder-stack",
+            "label": "6 + 6 layers",
+            "blurb": "The encoder stacks six identical layers, each with self-attention followed by a feed-forward network. The decoder also has six layers and adds a third sub-layer that attends to the encoder's output.",
+            "pages": [
+              3
+            ],
+            "quote": "The encoder is composed of a stack of N = 6 identical layers. Each layer has two sub-layers. The first is a multi-head self-attention mechanism, and the second is a simple, positionwise fully connected feed-forward network."
+          },
+          {
+            "id": "causal-mask",
+            "label": "Decoder mask",
+            "blurb": "In decoder self-attention, links to later positions are set to −∞ before the softmax, which is shown as red cells here. As a result, each prediction can only use the words already produced.",
+            "pages": [
+              3,
+              5
+            ],
+            "quote": "This masking, combined with fact that the output embeddings are offset by one position, ensures that the predictions for position i can depend only on the known outputs at positions less than i."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "index": 6,
+      "stage": "results",
+      "title": "Better translations at a fraction of the cost",
+      "narration": "The big model scores 28.4 BLEU on English-to-German and 41.8 on English-to-French after 3.5 days on eight GPUs. The base model trains in 12 hours and still beats earlier ensembles. It also reaches 92.7 F1 on parsing.",
+      "pages": [
+        1,
+        8,
+        10
+      ],
+      "quote": "On the WMT 2014 English-to-German translation task, the big transformer model (Transformer (big) in Table 2) outperforms the best previously reported models (including ensembles) by more than 2.0 BLEU, establishing a new state-of-the-art BLEU score of 28.4.",
+      "diagram": {
+        "id": "s7",
+        "title": "Better translations at a fraction of the cost",
+        "caption": "Table 2 (p. 8): both Transformer sizes match or beat earlier models on WMT 2014 translation while using far fewer training FLOPs. The base model beats every earlier En→De result and trails on En→Fr. Table 4 (p. 10) shows the model also transfers to English constituency parsing.",
+        "tryHint": "Try: drag the training-budget slider left and watch which models remain affordable, then switch to EN→FR.",
+        "html": "<style>.tf7{color:var(--ink,#1a1a1a);background:var(--paper,#fff);font:inherit}.tf7 .row{display:flex;flex-wrap:wrap;gap:8px}.tf7 svg{flex:1 1 330px;min-width:0;height:auto;display:block}.tf7 text{font-size:15px;fill:var(--ink,#1a1a1a)}.tf7 .mut{fill:var(--ink-3,#888)}.tf7 .ax{stroke:var(--ink-3,#999);stroke-width:1.5;stroke-linecap:round;fill:none}.tf7 .fade{opacity:0;transition:opacity .6s}.tf7 .on{opacity:1}.tf7 .pt{transition:transform .9s cubic-bezier(.3,.7,.2,1),opacity .6s}.tf7 .tk{transition:transform .9s cubic-bezier(.3,.7,.2,1)}.tf7 .bar{transform-box:fill-box;transform-origin:left center;transform:scaleX(0);transition:transform 1s cubic-bezier(.3,.7,.2,1)}.tf7 .bar.on{transform:scaleX(1)}.tf7 .ex{cursor:pointer;outline:none}.tf7 .ex .hit{fill:transparent;stroke:transparent;stroke-width:1.5}.tf7 .ex:hover .hit,.tf7 .ex:focus-visible .hit{fill:var(--accent-soft,#fde7d6);stroke:var(--accent,#e8772e)}.tf7 .rd{font-size:14px;color:var(--ink-2,#444);min-height:2.6em;margin:6px 2px 0}.tf7 .ctrls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:6px;font-size:14px}.tf7 .seg{border:1.5px solid var(--line,#ddd);background:var(--paper,#fff);color:var(--ink,#1a1a1a);border-radius:16px;padding:4px 12px;font:inherit;font-size:14px;cursor:pointer}.tf7 .seg.sel{border-color:var(--accent,#e8772e);background:var(--accent-soft,#fde7d6)}.tf7 label{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.tf7 input[type=range]{accent-color:var(--accent,#e8772e);width:170px}.tf7 .note{font-size:14px;color:#b83a2e;margin:8px 2px 0;opacity:0;transition:opacity .8s}.tf7 .note.on{opacity:1}.tf7.rm *{transition:none!important}</style><div class=\"tf7\" id=\"tf7\"><div class=\"row\"><svg id=\"tf7c\" viewBox=\"0 0 420 350\" width=\"100%\" role=\"img\"><title>BLEU score versus training cost for Transformer and prior translation models</title><g id=\"tf7axes\" class=\"fade\"><text x=\"56\" y=\"18\" class=\"mut\">newstest2014</text><text id=\"tf7pair\" x=\"400\" y=\"18\" text-anchor=\"end\">English→German</text><rect id=\"tf7tint\" x=\"400\" y=\"30\" width=\"0\" height=\"240\" fill=\"#d9483b\" opacity=\".08\"/><path class=\"ax\" d=\"M56 30V270H400\"/><g id=\"tf7xt\"></g><g id=\"tf7yt\"></g><g class=\"ex\" data-explore=\"bleu-score\" tabindex=\"0\" role=\"button\" aria-label=\"BLEU score: what the y-axis measures\" transform=\"translate(18 150) rotate(-90)\"><rect class=\"hit\" x=\"-28\" y=\"-12\" width=\"56\" height=\"22\" rx=\"6\"/><text x=\"0\" y=\"4\" text-anchor=\"middle\">BLEU</text></g><g class=\"ex\" data-explore=\"training-cost\" tabindex=\"0\" role=\"button\" aria-label=\"Training cost in FLOPs: how it was estimated\"><rect class=\"hit\" x=\"108\" y=\"298\" width=\"240\" height=\"22\" rx=\"6\"/><text x=\"228\" y=\"314\" text-anchor=\"middle\">Training cost (FLOPs, log)</text></g><circle cx=\"62\" cy=\"337\" r=\"5\" fill=\"var(--accent,#e8772e)\"/><text x=\"72\" y=\"342\">Transformer</text><circle cx=\"196\" cy=\"337\" r=\"5\" fill=\"var(--node,#b8b8b8)\"/><text x=\"206\" y=\"342\">single</text><circle cx=\"276\" cy=\"337\" r=\"4.5\" fill=\"var(--paper,#fff)\" stroke=\"var(--ink-3,#888)\" stroke-width=\"1.5\"/><text x=\"286\" y=\"342\">ensemble</text></g><g id=\"tf7pts\"></g></svg><svg id=\"tf7p\" viewBox=\"0 0 420 350\" width=\"100%\" role=\"img\"><title>English constituency parsing F1 on WSJ section 23</title><g class=\"ex\" data-explore=\"parsing-f1\" tabindex=\"0\" role=\"button\" aria-label=\"Parsing F1 results\"><rect class=\"hit\" x=\"8\" y=\"2\" width=\"200\" height=\"24\" rx=\"6\"/><text x=\"16\" y=\"19\">Parsing · WSJ §23 F1</text></g><g id=\"tf7bars\"></g><text x=\"16\" y=\"336\" class=\"mut\">F1 axis starts at 85</text></svg></div><div class=\"rd\" id=\"tf7rd\" aria-live=\"polite\"></div><div class=\"ctrls\"><button class=\"seg sel\" id=\"tf7de\">EN→DE</button><button class=\"seg\" id=\"tf7fr\">EN→FR</button><label for=\"tf7b\">Training budget <input type=\"range\" id=\"tf7b\" min=\"18.3\" max=\"21.3\" step=\"0.01\" value=\"21.3\"></label><button class=\"seg\" id=\"tf7rp\">↻ Replay</button></div><p class=\"note\" id=\"tf7note\">The catch: every word attends to every word, so each self-attention layer costs O(n²·d) (Table 1, p. 6).</p></div><script>(function(){var R=document.getElementById('tf7');if(!R)return;var NS='http://www.w3.org/2000/svg';function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}var P=[{n:'GNMT + RL',de:[24.6,2.3e19],fr:[39.92,1.4e20]},{n:'ConvS2S',de:[25.16,9.6e18],fr:[40.46,1.5e20]},{n:'MoE',de:[26.03,2.0e19],fr:[40.56,1.2e20]},{n:'Deep-Att + PosUnk',fr:[39.2,1.0e20]},{n:'Deep-Att + PosUnk Ensemble',e:1,fr:[40.4,8.0e20]},{n:'GNMT + RL Ensemble',e:1,de:[26.30,1.8e20],fr:[41.16,1.1e21]},{n:'ConvS2S Ensemble',e:1,de:[26.36,7.7e19],fr:[41.29,1.2e21]},{n:'Transformer (base)',t:'base',de:[27.3,3.3e18],fr:[38.1,3.3e18]},{n:'Transformer (big)',t:'big',de:[28.4,2.3e19],fr:[41.8,2.3e19]}];var RG={de:[23,29,[24,26,28]],fr:[37.5,42.5,[38,40,42]]};var pair='de',budget=21.3,S={comp:0,big:0,base:0};function xOf(l){return 56+(l-18)/3.3*344}function yOf(b){var r=RG[pair];return 270-(b-r[0])/(r[1]-r[0])*240}function sup(e){return String(e).split('').map(function(c){return '⁰¹²³⁴⁵⁶⁷⁸⁹'[+c]}).join('')}function fmt(v){var e=Math.floor(Math.log10(v)+1e-9);return (v/Math.pow(10,e)).toFixed(1)+'·10'+sup(e)}var xt=document.getElementById('tf7xt');[18,19,20,21].forEach(function(l){var x=xOf(l);el('path',{d:'M'+x+' 270v5','class':'ax'},xt);var t=el('text',{x:x,y:292,'text-anchor':'middle','class':'mut'},xt);t.textContent='10'+sup(l)});var yt=document.getElementById('tf7yt'),YT=[];for(var i=0;i<3;i++){var g=el('g',{'class':'tk'},yt);el('path',{d:'M51 0h5','class':'ax'},g);var t=el('text',{x:47,y:5,'text-anchor':'end','class':'mut'},g);YT.push([g,t])}var pts=document.getElementById('tf7pts'),rd=document.getElementById('tf7rd'),hov=null;P.forEach(function(p){var g=el('g',{'class':'pt'},pts);if(p.t){g.setAttribute('class','pt ex');g.setAttribute('data-explore','transformer-'+p.t);g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label',p.n+' result');el('rect',{'class':'hit',x:-9,y:-12,width:84,height:24,rx:6},g);el('circle',{r:6,fill:'var(--accent,#e8772e)'},g);p.lb=el('text',{x:10,y:5},g)}else{el('circle',{r:p.e?4.5:5,fill:p.e?'var(--paper,#fff)':'var(--node,#b8b8b8)',stroke:p.e?'var(--ink-3,#888)':'none','stroke-width':1.5},g);el('circle',{r:10,fill:'transparent'},g);g.addEventListener('mouseenter',function(){hov=p;readout()});g.addEventListener('mouseleave',function(){hov=null;readout()})}p.g=g});var bars=document.getElementById('tf7bars'),BD=[['RNN seq2seq · WSJ only',88.3,0],['BerkeleyParser · WSJ only',90.4,0],['Transformer · WSJ only',91.3,1],['Best prior · semi-supervised',92.1,0],['Transformer · semi-supervised',92.7,1],['RNN Grammar · generative',93.3,0]],BE=[];BD.forEach(function(b,i){var y=50+i*46,w=(b[1]-85)/9*320;var t=el('text',{x:16,y:y,'class':b[2]?'':'mut'},bars);t.textContent=b[0];var r=el('rect',{x:16,y:y+7,width:w,height:13,rx:3,fill:b[2]?'var(--accent,#e8772e)':'var(--node,#c4c4c4)','class':'bar'},bars);var v=el('text',{x:16+w+7,y:y+19,'class':'fade'},bars);v.textContent=b[1].toFixed(1);BE.push(r,v)});function readout(){if(hov){var d=hov[pair];rd.textContent=hov.n+': '+d[0]+' BLEU at '+fmt(d[1])+' FLOPs';return}var lim=Math.pow(10,budget),best=null;P.forEach(function(p){var d=p[pair];if(d&&d[1]<=lim*1.0001&&(!best||d[0]>best[pair][0]))best=p});rd.textContent='Budget ≤ '+fmt(lim)+' FLOPs → '+(best?'best affordable: '+best.n+', '+best[pair][0]+' BLEU':'no model trains within this budget');}function render(){var r=RG[pair];document.getElementById('tf7pair').textContent=pair=='de'?'English→German':'English→French';r[2].forEach(function(v,i){YT[i][0].style.transform='translate(0px,'+yOf(v)+'px)';YT[i][1].textContent=v});P.forEach(function(p){var d=p[pair],sh=p.t?S[p.t]:S.comp;if(!d){p.g.style.opacity=0;p.g.style.pointerEvents='none';return}var l=Math.log10(d[1]);p.g.style.transform='translate('+xOf(l).toFixed(1)+'px,'+yOf(d[0]).toFixed(1)+'px)';p.g.style.opacity=sh?(l<=budget+1e-6?1:.18):0;p.g.style.pointerEvents=sh?'auto':'none';if(p.lb)p.lb.textContent=(p.t=='big'?'Big ':'Base ')+d[0]});var tx=xOf(budget),ti=document.getElementById('tf7tint');ti.setAttribute('x',tx);ti.setAttribute('width',Math.max(0,400-tx));document.getElementById('tf7de').className='seg'+(pair=='de'?' sel':'');document.getElementById('tf7fr').className='seg'+(pair=='fr'?' sel':'');readout()}function setPair(p){pair=p;render()}document.getElementById('tf7de').onclick=function(){setPair('de')};document.getElementById('tf7fr').onclick=function(){setPair('fr')};var sl=document.getElementById('tf7b');sl.oninput=function(){budget=+sl.value;render()};var T=[];function on(e,v){e.classList[v?'add':'remove']('on')}function bars2(v){BE.forEach(function(e){on(e,v)})}function final(){S.comp=S.big=S.base=1;pair='de';on(document.getElementById('tf7axes'),1);bars2(1);on(document.getElementById('tf7note'),1);render()}function play(){T.forEach(clearTimeout);T=[];budget=21.3;sl.value=21.3;if(matchMedia('(prefers-reduced-motion: reduce)').matches){R.classList.add('rm');final();return}R.classList.add('rm');S.comp=S.big=S.base=0;pair='de';on(document.getElementById('tf7axes'),0);bars2(0);on(document.getElementById('tf7note'),0);render();void R.offsetWidth;R.classList.remove('rm');var q=[[100,function(){on(document.getElementById('tf7axes'),1)}],[600,function(){S.comp=1;render()}],[1400,function(){S.big=1;render()}],[2500,function(){setPair('fr')}],[3600,function(){setPair('de');S.base=1;render()}],[4500,function(){bars2(1)}],[5500,function(){on(document.getElementById('tf7note'),1)}]];q.forEach(function(s){T.push(setTimeout(s[1],s[0]))})}document.getElementById('tf7rp').onclick=play;play()})();</script>",
+        "explorables": [
+          {
+            "id": "training-cost",
+            "label": "Training cost (FLOPs)",
+            "blurb": "Cost is an estimate, not a measurement. It multiplies training time, the number of GPUs, and each GPU's sustained single-precision throughput, which is 9.5 TFLOPS for a P100.",
+            "pages": [
+              8
+            ],
+            "quote": "We estimate the number of floating point operations used to train a model by multiplying the training time, the number of GPUs used, and an estimate of the sustained single-precision floating-point capacity of each GPU"
+          },
+          {
+            "id": "bleu-score",
+            "label": "BLEU on newstest2014",
+            "blurb": "BLEU scores translation quality by overlap with reference translations, so higher is better. All translation numbers in the chart come from the WMT 2014 newstest2014 test sets.",
+            "pages": [
+              8
+            ],
+            "quote": "The Transformer achieves better BLEU scores than previous state-of-the-art models on the English-to-German and English-to-French newstest2014 tests at a fraction of the training cost."
+          },
+          {
+            "id": "parsing-f1",
+            "label": "Parsing F1 (WSJ 23)",
+            "blurb": "A 4-layer Transformer with little task-specific tuning reaches 91.3 F1 trained on WSJ alone and 92.7 F1 semi-supervised. Among the models listed, only the Recurrent Neural Network Grammar (93.3) and one multi-task model (93.0) score higher.",
+            "pages": [
+              9,
+              10
+            ],
+            "quote": "Our results in Table 4 show that despite the lack of task-specific tuning our model performs surprisingly well, yielding better results than all previously reported models with the exception of the Recurrent Neural Network Grammar"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "index": 7,
+      "stage": "limits",
+      "title": "Every-word-to-every-word gets costly for long inputs",
+      "narration": "All those arcs scale with the square of sentence length, which hurts on very long inputs like images or audio. Output generation is also still one word at a time. The authors leave restricted, local attention for future work.",
+      "pages": [
+        6,
+        7,
+        10
+      ],
+      "quote": "To improve computational performance for tasks involving very long sequences, self-attention could be restricted to considering only a neighborhood of size r in the input sequence centered around the respective output position.",
+      "diagram": {
+        "id": "s8",
+        "title": "Every-word-to-every-word gets costly for long inputs",
+        "caption": "A self-attention layer costs O(n²·d), while attention restricted to a neighborhood of size r would cost O(r·n·d) but stretch the maximum path length to O(n/r) (pp. 6–7). The authors leave local attention, and less sequential generation, for future work (p. 10).",
+        "tryHint": "Try: drag the sequence length to the right, then switch restricted attention on and off and watch which arcs from “its” are lost.",
+        "html": "<div class='cw' id='cw8'><style>.cw{font-family:inherit;color:var(--ink,#1a1a1a);background:var(--paper,#fff)}.cw .hd{font-size:17px;font-weight:600;margin:0 0 8px}.cw .row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start}.cw .pa{flex:1 1 250px;max-width:330px;margin:0 auto}.cw .pb{flex:1.5 1 300px}.cw svg{display:block;width:100%;height:auto}.cw .ctl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:10px;font-size:14px;color:var(--ink-2,#444)}.cw label{display:flex;align-items:center;gap:8px}.cw input[type=range]{accent-color:var(--accent,#e8772e);width:140px}.cw button{font:inherit;font-size:13px;border:1.5px solid var(--line,#ddd);background:var(--paper,#fff);color:var(--ink,#1a1a1a);border-radius:999px;padding:5px 12px;cursor:pointer}.cw button[aria-pressed=true]{border-color:var(--accent,#e8772e);background:var(--accent-soft,#fdebdc)}.cw .out{font-size:13px;color:var(--ink-2,#444);margin-top:8px;line-height:1.6}.cw .sm{font-size:12px;color:var(--ink-3,#777);margin-top:4px}.cw [data-explore]{cursor:pointer;outline:none}.cw .hl{fill:transparent;stroke:transparent;stroke-width:1.5}.cw g[data-explore]:hover .hl,.cw g[data-explore]:focus-visible .hl{fill:var(--accent-soft,#fdebdc);stroke:var(--accent,#e8772e)}.cw span[data-explore]{border-bottom:1.5px dashed var(--accent,#e8772e);padding:1px 4px;border-radius:4px;white-space:nowrap}.cw span[data-explore]:hover,.cw span[data-explore]:focus-visible{background:var(--accent-soft,#fdebdc);outline:1.5px solid var(--accent,#e8772e)}</style><div class='hd'>Every-word-to-every-word gets costly for long inputs</div><div class='row'><div class='pa'><svg viewBox='0 0 300 466' role='img' aria-labelledby='cw8at'><title id='cw8at'>The query word its attends to every other word of the example sentence; restricted attention keeps only a local window, and output is still generated one word at a time</title><text x='10' y='20' font-size='13' fill='var(--ink-2,#444)'>Query “its” → every other word</text><g id='cw8win'><rect id='cw8wr' x='34' rx='8' width='102' fill='rgba(47,154,90,0.08)' stroke='#2f9a5a' stroke-width='1.5' stroke-dasharray='4 3'/><text id='cw8wl' x='3' font-size='13' fill='#2f9a5a'>r=5</text></g><g id='cw8arcs'></g><g id='cw8tiles'></g><text id='cw8note' x='10' y='396' font-size='12' fill='#cf4a3c'>“Law” is outside the window: that link is lost</text><g data-explore='sequential-decoding' tabindex='0' role='button' aria-label='Sequential decoding: output is generated one word at a time'><rect class='hl' x='6' y='402' width='288' height='56' rx='8'/><text x='16' y='418' font-size='12' fill='var(--ink-2,#444)'>Output: still generated one word at a time</text><g id='cw8dec'></g></g></svg></div><div class='pb'><svg viewBox='0 0 360 292' role='img' aria-labelledby='cw8bt'><title id='cw8bt'>Pairs scored per layer versus sequence length on log scales: n squared for full self-attention, r times n for restricted attention</title><rect id='cw8reg' y='30' height='206' fill='rgba(207,74,60,0.06)'/><g id='cw8ax'></g><path id='cw8rp2' fill='none' stroke='#cf4a3c' stroke-width='2' stroke-linecap='round' pathLength='1'/><path id='cw8gp' fill='none' stroke='#2f9a5a' stroke-width='2' stroke-linecap='round' pathLength='1'/><circle id='cw8rm' r='4.5' fill='#cf4a3c' stroke='#fff' stroke-width='1.5'/><circle id='cw8gm' r='4.5' fill='#2f9a5a' stroke='#fff' stroke-width='1.5'/><g data-explore='quadratic-cost' tabindex='0' role='button' aria-label='Quadratic cost of full self-attention'><rect class='hl' x='62' y='36' width='178' height='20' rx='5'/><path d='M70 46H88' stroke='#cf4a3c' stroke-width='2.5' stroke-linecap='round'/><text x='94' y='50' font-size='13' fill='var(--ink,#1a1a1a)'>full attention: n² pairs</text></g><g data-explore='restricted-attention' tabindex='0' role='button' aria-label='Restricted attention with neighborhood r'><rect class='hl' x='62' y='60' width='178' height='20' rx='5'/><path d='M70 70H88' stroke='#2f9a5a' stroke-width='2.5' stroke-linecap='round'/><text x='94' y='74' font-size='13' fill='var(--ink,#1a1a1a)'>restricted: r·n pairs</text></g><g data-explore='long-inputs' tabindex='0' role='button' aria-label='Long inputs such as images, audio and video'><rect class='hl' x='248' y='176' width='88' height='48' rx='6'/><text x='292' y='190' font-size='13' text-anchor='middle' fill='#cf4a3c'>long inputs:</text><text x='292' y='204' font-size='13' text-anchor='middle' fill='var(--ink-2,#444)'>images,</text><text x='292' y='218' font-size='13' text-anchor='middle' fill='var(--ink-2,#444)'>audio, video</text></g></svg></div></div><div class='ctl'><button id='cw8tg' aria-pressed='true'>Restricted attention: on</button><label>Window r: <b id='cw8rv'>5</b><input id='cw8r' type='range' min='3' max='11' step='2' value='5' aria-label='Window size r'></label><label>Sequence length n<input id='cw8n' type='range' min='0' max='300' value='200' aria-label='Sequence length n'></label><button id='cw8rpl'>↻ Replay</button></div><div class='out'><span id='cw8ro'></span> <span data-explore='longer-paths' tabindex='0' role='button' aria-label='Trade-off: longer maximum path length'>Trade-off: max path length O(1) → O(n/r)</span></div><div class='sm'>Arc weights and sequence lengths are illustrative. Costs O(n²·d) and O(r·n·d) are from Table 1 (p. 6). Restricted attention is proposed, not tested, in the paper.</div><script>(function(){var R=document.getElementById('cw8');var NS='http://www.w3.org/2000/svg';function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}function q(s){return R.querySelector(s);}var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;var W=['The','Law','will','never','be','perfect',',','but','its','application','should','be','just'];var Q=8,VI='#7b61c9',RD='#cf4a3c';var WT=[.04,.42,.03,.03,.04,.05,.03,.06,0,.3,.06,.04,.05];var S={restrict:true,r:5,n:1000};function cl(x){return x<0?0:x>1?1:x;}function ease(k){return k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;}function ty(i){return 34+i*27;}function yc(i){return ty(i)+11;}var gT=q('#cw8tiles'),gA=q('#cw8arcs'),tiles=[],arcs=[];W.forEach(function(w,i){var g=el('g',{},gT);var isq=i===Q;el('rect',{x:40,y:ty(i),width:90,height:22,rx:7,fill:isq?'#fbe3a6':'var(--node,#eef0f3)',stroke:isq?'#e0a526':'var(--line,#d9dce1)','stroke-width':1.5},g);var t=el('text',{x:85,y:ty(i)+15.5,'text-anchor':'middle','font-size':13,fill:'var(--ink,#1a1a1a)'},g);t.textContent=w;tiles.push(g);if(!isq){var d=Math.abs(i-Q),cx=146+d*24;var p=el('path',{d:'M130 '+yc(Q)+' Q'+cx+' '+((yc(Q)+yc(i))/2)+' 130 '+yc(i),fill:'none',stroke:VI,'stroke-width':1+WT[i]*9,'stroke-linecap':'round',pathLength:1},gA);arcs.push({p:p,i:i,w:1+WT[i]*9});}});var gD=q('#cw8dec'),dec=[];for(var k=0;k<5;k++){var bx=16+k*56;var g=el('g',{},gD);el('rect',{x:bx,y:426,width:38,height:24,rx:6,fill:'var(--node,#eef0f3)',stroke:'var(--line,#d9dce1)','stroke-width':1.5},g);var t=el('text',{x:bx+19,y:442,'text-anchor':'middle','font-size':13,fill:'var(--ink,#1a1a1a)'},g);t.textContent='y'+(k+1);var a=null;if(k<4){var x1=bx+41,x2=bx+53;a=el('path',{d:'M'+x1+' 438H'+x2+'M'+(x2-4)+' 434L'+x2+' 438L'+(x2-4)+' 442',fill:'none',stroke:'var(--accent,#e8772e)','stroke-width':1.5,'stroke-linecap':'round','stroke-linejoin':'round'},gD);}dec.push({g:g,a:a});}var X0=56,X1=340,Y0=236,Y1=30;function lg(v){return Math.log(v)/Math.LN10;}function xs(n){return X0+(X1-X0)*(lg(n)-1)/3;}function ys(v){return Y0-(Y0-Y1)*(lg(Math.max(v,10))-1)/7;}var ax=q('#cw8ax');el('path',{d:'M'+X0+' '+Y1+'V'+Y0+'H'+X1,fill:'none',stroke:'var(--ink-3,#888)','stroke-width':1.5,'stroke-linecap':'round'},ax);[[10,'10'],[100,'100'],[1000,'1k'],[10000,'10k']].forEach(function(o){var t=el('text',{x:xs(o[0]),y:252,'text-anchor':'middle','font-size':13,fill:'var(--ink-3,#777)'},ax);t.textContent=o[1];});[[10,'10'],[1e3,'1k'],[1e5,'100k'],[1e7,'10M']].forEach(function(o){var t=el('text',{x:50,y:ys(o[0])+4,'text-anchor':'end','font-size':13,fill:'var(--ink-3,#777)'},ax);t.textContent=o[1];});var xl=el('text',{x:198,y:278,'text-anchor':'middle','font-size':13,fill:'var(--ink-2,#444)'},ax);xl.textContent='sequence length n (log scale, illustrative)';var yl=el('text',{x:0,y:0,'text-anchor':'middle','font-size':13,fill:'var(--ink-2,#444)',transform:'translate(14 133) rotate(-90)'},ax);yl.textContent='pairs scored per layer (log)';var reg=q('#cw8reg');reg.setAttribute('x',xs(1000));reg.setAttribute('width',X1-xs(1000));function curve(f){var d='';for(var L=1;L<=4.0001;L+=0.05){var n=Math.pow(10,L);d+=(d?'L':'M')+xs(n).toFixed(1)+' '+ys(f(n)).toFixed(1);}return d;}var rp=q('#cw8rp2'),gp=q('#cw8gp'),rm=q('#cw8rm'),gm=q('#cw8gm');rp.setAttribute('d',curve(function(n){return n*n;}));function gpath(){gp.setAttribute('d',curve(function(n){return S.r*n;}));}gpath();rp.setAttribute('stroke-dasharray','1 1');gp.setAttribute('stroke-dasharray','1 1');var wr=q('#cw8wr'),wl=q('#cw8wl'),win=q('#cw8win'),note=q('#cw8note'),ro=q('#cw8ro');function fmt(x){return Math.round(x).toLocaleString('en-US');}function readout(){var n=S.n;var s='n = '+fmt(n)+' · full attention scores n² = '+fmt(n*n)+' pairs';if(S.restrict){var f=n/S.r;s+=' · restricted (r = '+S.r+') scores r·n = '+fmt(S.r*n)+' ('+(f<10?f.toFixed(1):fmt(f))+'× fewer)';}ro.textContent=s+'.';}function render(v){tiles.forEach(function(g,i){g.setAttribute('opacity',cl(v.tiles*2-i/12));});var h=(S.r-1)/2;arcs.forEach(function(a){var out=Math.abs(a.i-Q)>h,p=a.p;if(v.arcs<1){p.setAttribute('stroke-dasharray','1 1');p.setAttribute('stroke-dashoffset',1-v.arcs);p.setAttribute('stroke',VI);p.setAttribute('opacity',v.arcs>0?1:0);p.setAttribute('stroke-width',a.w);}else{var m=out?v.mix:0;p.setAttribute('stroke-dashoffset',0);p.setAttribute('stroke-dasharray',m>0.5?'0.02 0.025':'1 0');p.setAttribute('stroke',m>0.5?RD:VI);p.setAttribute('opacity',1-0.5*m);p.setAttribute('stroke-width',a.w*(1-m)+1.5*m);}});var top=ty(Math.max(0,Q-h))-3,bot=ty(Math.min(12,Q+h))+25;wr.setAttribute('y',top);wr.setAttribute('height',bot-top);wl.setAttribute('y',yc(Q)+5);wl.textContent='r='+S.r;win.setAttribute('opacity',v.mix);note.setAttribute('opacity',v.mix);dec.forEach(function(o,k){o.g.setAttribute('opacity',cl(v.dec*5-k));if(o.a)o.a.setAttribute('opacity',cl(v.dec*5-k-0.6));});rp.setAttribute('stroke-dashoffset',1-v.curve);rp.setAttribute('opacity',v.curve>0?1:0);gp.setAttribute('stroke-dashoffset',1-v.mix);gp.setAttribute('opacity',v.mix>0?1:0);rm.setAttribute('cx',xs(S.n));rm.setAttribute('cy',ys(S.n*S.n));rm.setAttribute('opacity',cl((v.curve-0.7)/0.3));gm.setAttribute('cx',xs(S.n));gm.setAttribute('cy',ys(S.r*S.n));gm.setAttribute('opacity',cl((v.mix-0.7)/0.3));readout();}var mix=1,raf=0;function draw(){render({tiles:1,arcs:1,curve:1,dec:1,mix:mix});}function stop(){cancelAnimationFrame(raf);}function tweenMix(to){stop();if(RM){mix=to;draw();return;}var from=mix,t0=performance.now();function st(t){var k=Math.min(1,(t-t0)/400);mix=from+(to-from)*ease(k);draw();if(k<1)raf=requestAnimationFrame(st);}raf=requestAnimationFrame(st);}var tg=q('#cw8tg'),rs=q('#cw8r'),rv=q('#cw8rv'),ns=q('#cw8n');function setTg(){tg.setAttribute('aria-pressed',S.restrict?'true':'false');tg.textContent='Restricted attention: '+(S.restrict?'on':'off');}function ph(t,a,b){return ease(cl((t-a)/(b-a)));}function intro(){stop();S.restrict=true;setTg();if(RM){mix=1;draw();return;}var t0=performance.now();function st(now){var t=(now-t0)/1000;var v={tiles:ph(t,0,.8),arcs:ph(t,.8,2),curve:ph(t,2,3.2),dec:ph(t,3.2,4.3),mix:ph(t,4.3,5.5)};mix=v.mix;render(v);if(t<5.5)raf=requestAnimationFrame(st);else{mix=1;draw();}}raf=requestAnimationFrame(st);}tg.addEventListener('click',function(){S.restrict=!S.restrict;setTg();tweenMix(S.restrict?1:0);});rs.addEventListener('input',function(){stop();S.r=+rs.value;rv.textContent=S.r;gpath();mix=S.restrict?1:0;draw();});ns.addEventListener('input',function(){stop();S.n=Math.round(Math.pow(10,1+ns.value/100));mix=S.restrict?1:0;draw();});q('#cw8rpl').addEventListener('click',intro);intro();})();</script></div>",
+        "explorables": [
+          {
+            "id": "quadratic-cost",
+            "label": "Quadratic cost",
+            "blurb": "Every word scores every other word, so one self-attention layer costs O(n²·d) (Table 1). That is cheap for sentences, where n is usually smaller than d, but it grows fast for long inputs.",
+            "pages": [
+              6,
+              7
+            ],
+            "quote": "self-attention layers are faster than recurrent layers when the sequence length n is smaller than the representation dimensionality d, which is most often the case with sentence representations"
+          },
+          {
+            "id": "restricted-attention",
+            "label": "Restricted window r",
+            "blurb": "The authors suggest a fix in which each position attends only to a neighborhood of r words around it, cutting the cost to O(r·n·d). They propose it but do not test it in the paper.",
+            "pages": [
+              6,
+              7
+            ],
+            "quote": "To improve computational performance for tasks involving very long sequences, self-attention could be restricted to considering only a neighborhood of size r in the input sequence centered around the respective output position."
+          },
+          {
+            "id": "longer-paths",
+            "label": "Longer paths trade-off",
+            "blurb": "A window costs reach. Distant words, like 'Law' for 'its' in this example, can no longer connect in one step, so the maximum path length grows from O(1) to O(n/r).",
+            "pages": [
+              6,
+              7
+            ],
+            "quote": "centered around the respective output position. This would increase the maximum path length to O(n/r). We plan to investigate this approach further in future work."
+          },
+          {
+            "id": "sequential-decoding",
+            "label": "One word at a time",
+            "blurb": "Training runs in parallel, but the decoder is auto-regressive. It emits one symbol, feeds it back in, then emits the next. The authors name less sequential generation as a research goal.",
+            "pages": [
+              2,
+              10
+            ],
+            "quote": "Given z, the decoder then generates an output sequence (y1, ..., ym) of symbols one element at a time."
+          },
+          {
+            "id": "long-inputs",
+            "label": "Images, audio, video",
+            "blurb": "Non-text inputs such as images, audio and video give much longer sequences than sentences, which is where the n² cost bites. The authors plan to extend the Transformer to them with local, restricted attention.",
+            "pages": [
+              10
+            ],
+            "quote": "We plan to extend the Transformer to problems involving input and output modalities other than text and to investigate local, restricted attention mechanisms to efficiently handle large inputs and outputs such as images, audio and video."
+          }
+        ]
+      }
+    }
+  ],
+  "suggestions": {
+    "title": "Attention Is All You Need",
+    "authors": "Vaswani et al.",
+    "year": 2017,
+    "questions": [
+      {
+        "title": "Why can attention link distant words in a single step?",
+        "hook": "An RNN passes a signal through n steps to connect the first and last word, while self-attention connects every pair at once, trading sequential depth for n² work.",
+        "pages": [
+          6,
+          7
+        ],
+        "quote": "As noted in Table 1, a self-attention layer connects all positions with a constant number of sequentially executed operations, whereas a recurrent layer requires O(n) sequential operations."
+      },
+      {
+        "title": "How does a query pick which values to read?",
+        "hook": "Attention is a soft dictionary lookup: every key gets a score against the query, and the output blends all values by those scores rather than fetching just one.",
+        "pages": [
+          3,
+          4
+        ],
+        "quote": "An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors."
+      },
+      {
+        "title": "Why divide the dot products by √dₖ?",
+        "hook": "Without the scale factor, dot-product variance grows with dₖ, so softmax saturates to near one-hot and its gradients almost vanish.",
+        "pages": [
+          4
+        ],
+        "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+      },
+      {
+        "title": "Why use 8 small heads instead of one big one?",
+        "hook": "One head has to average everything into a single blend, while eight 64-dim heads at the same total cost can each track a different relation, such as syntax or anaphora.",
+        "pages": [
+          5,
+          9,
+          14
+        ],
+        "quote": "Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions. With a single attention head, averaging inhibits this."
+      },
+      {
+        "title": "How does masking stop the decoder from cheating?",
+        "hook": "A triangle of −∞ entries in the score matrix, together with shifting the outputs right by one, lets the model train on all positions in parallel without ever seeing the future.",
+        "pages": [
+          3,
+          5
+        ],
+        "quote": "This masking, combined with fact that the output embeddings are offset by one position, ensures that the predictions for position i can depend only on the known outputs at positions less than i."
+      },
+      {
+        "title": "How do sine waves tell the model word order?",
+        "hook": "Attention by itself ignores word order, so each position gets a fingerprint of sinusoids at geometrically spaced frequencies; any fixed offset is then a linear function of that fingerprint.",
+        "pages": [
+          6
+        ],
+        "quote": "where pos is the position and i is the dimension. That is, each dimension of the positional encoding corresponds to a sinusoid."
+      }
+    ]
+  }
+}

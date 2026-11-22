@@ -1,0 +1,141 @@
+{
+  "paper": {
+    "title": "Attention Is All You Need",
+    "authors": "Vaswani et al.",
+    "year": 2017,
+    "pdfUrl": "/demo/attention.pdf"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "title": "Why divide by √dₖ?",
+      "hook": "Without it, softmax saturates and gradients vanish.",
+      "pages": [
+        4
+      ],
+      "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients",
+      "diagramKind": "interactive-plot"
+    },
+    {
+      "id": "q2",
+      "title": "How does masking stop cheating?",
+      "hook": "Without it, softmax saturates and gradients vanish.",
+      "pages": [
+        5
+      ],
+      "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients",
+      "diagramKind": "interactive-plot"
+    }
+  ],
+  "diagrams": {
+    "q1": {
+      "id": "q1",
+      "title": "Scaling keeps softmax soft",
+      "caption": "Fixture caption (p. 4).",
+      "tryHint": "Try: click Softmax.",
+      "html": "<style>.n{fill:var(--paper);stroke:var(--node);stroke-width:1.5}[data-explore]{cursor:pointer}[data-explore]:hover .n,[data-explore]:focus-visible .n{stroke:var(--accent);fill:var(--accent-soft)}.t{font:13px system-ui;fill:var(--ink)}#r{font:12px system-ui;margin-top:8px;border:1px solid var(--line);background:#fff;border-radius:99px;padding:4px 12px;cursor:pointer}</style>\n<svg viewBox=\"0 0 600 240\" width=\"100%\"><title>Fixture: Q, K, V flow into attention</title>\n<g data-explore=\"query\" tabindex=\"0\" role=\"button\" aria-label=\"Query\"><rect class=\"n\" x=\"30\" y=\"40\" width=\"120\" height=\"44\" rx=\"10\"/><text class=\"t\" x=\"90\" y=\"67\" text-anchor=\"middle\">Query</text></g>\n<g data-explore=\"key\" tabindex=\"0\" role=\"button\" aria-label=\"Key\"><rect class=\"n\" x=\"30\" y=\"100\" width=\"120\" height=\"44\" rx=\"10\"/><text class=\"t\" x=\"90\" y=\"127\" text-anchor=\"middle\">Key</text></g>\n<g data-explore=\"softmax\" tabindex=\"0\" role=\"button\" aria-label=\"Softmax\"><rect class=\"n\" x=\"300\" y=\"70\" width=\"140\" height=\"44\" rx=\"10\"/><text class=\"t\" x=\"370\" y=\"97\" text-anchor=\"middle\">softmax(QKᵀ/√dₖ)</text></g>\n<path id=\"p\" d=\"M150 62 C220 62 240 92 300 92 M150 122 C220 122 240 92 300 92\" fill=\"none\" stroke=\"var(--accent)\" stroke-width=\"1.5\" stroke-dasharray=\"400\" stroke-dashoffset=\"400\"><animate attributeName=\"stroke-dashoffset\" to=\"0\" dur=\"2s\" fill=\"freeze\"/></path>\n<text x=\"30\" y=\"220\" style=\"font:11px system-ui;fill:var(--ink-3)\">Fixture diagram (illustrative)</text></svg><button id=\"r\">Replay</button>\n<script>document.getElementById(\"r\").onclick=()=>location.reload()</script>",
+      "explorables": [
+        {
+          "id": "query",
+          "label": "Query",
+          "blurb": "Query explained in one or two sentences (fixture).",
+          "pages": [
+            4
+          ],
+          "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+        },
+        {
+          "id": "key",
+          "label": "Key",
+          "blurb": "Key explained in one or two sentences (fixture).",
+          "pages": [
+            4
+          ],
+          "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+        },
+        {
+          "id": "softmax",
+          "label": "Softmax",
+          "blurb": "Softmax explained in one or two sentences (fixture).",
+          "pages": [
+            4
+          ],
+          "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+        }
+      ]
+    },
+    "q1/softmax": {
+      "id": "q1/softmax",
+      "title": "Inside softmax (fixture)",
+      "caption": "Fixture caption (p. 4).",
+      "tryHint": "Try: click Softmax.",
+      "html": "<style>.n{fill:var(--paper);stroke:var(--node);stroke-width:1.5}[data-explore]{cursor:pointer}[data-explore]:hover .n,[data-explore]:focus-visible .n{stroke:var(--accent);fill:var(--accent-soft)}.t{font:13px system-ui;fill:var(--ink)}#r{font:12px system-ui;margin-top:8px;border:1px solid var(--line);background:#fff;border-radius:99px;padding:4px 12px;cursor:pointer}</style>\n<svg viewBox=\"0 0 600 240\" width=\"100%\"><title>Fixture: Q, K, V flow into attention</title>\n<g data-explore=\"query\" tabindex=\"0\" role=\"button\" aria-label=\"Query\"><rect class=\"n\" x=\"30\" y=\"40\" width=\"120\" height=\"44\" rx=\"10\"/><text class=\"t\" x=\"90\" y=\"67\" text-anchor=\"middle\">Query</text></g>\n<g data-explore=\"key\" tabindex=\"0\" role=\"button\" aria-label=\"Key\"><rect class=\"n\" x=\"30\" y=\"100\" width=\"120\" height=\"44\" rx=\"10\"/><text class=\"t\" x=\"90\" y=\"127\" text-anchor=\"middle\">Key</text></g>\n<g data-explore=\"softmax\" tabindex=\"0\" role=\"button\" aria-label=\"Softmax\"><rect class=\"n\" x=\"300\" y=\"70\" width=\"140\" height=\"44\" rx=\"10\"/><text class=\"t\" x=\"370\" y=\"97\" text-anchor=\"middle\">softmax(QKᵀ/√dₖ)</text></g>\n<path id=\"p\" d=\"M150 62 C220 62 240 92 300 92 M150 122 C220 122 240 92 300 92\" fill=\"none\" stroke=\"var(--accent)\" stroke-width=\"1.5\" stroke-dasharray=\"400\" stroke-dashoffset=\"400\"><animate attributeName=\"stroke-dashoffset\" to=\"0\" dur=\"2s\" fill=\"freeze\"/></path>\n<text x=\"30\" y=\"220\" style=\"font:11px system-ui;fill:var(--ink-3)\">Fixture diagram (illustrative)</text></svg><button id=\"r\">Replay</button>\n<script>document.getElementById(\"r\").onclick=()=>location.reload()</script>",
+      "explorables": [
+        {
+          "id": "query",
+          "label": "Query",
+          "blurb": "Query explained in one or two sentences (fixture).",
+          "pages": [
+            4
+          ],
+          "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+        },
+        {
+          "id": "key",
+          "label": "Key",
+          "blurb": "Key explained in one or two sentences (fixture).",
+          "pages": [
+            4
+          ],
+          "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+        },
+        {
+          "id": "softmax",
+          "label": "Softmax",
+          "blurb": "Softmax explained in one or two sentences (fixture).",
+          "pages": [
+            4
+          ],
+          "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+        }
+      ],
+      "parentId": "q1"
+    },
+    "q2": {
+      "id": "q2",
+      "title": "Masking (fixture)",
+      "caption": "Fixture caption (p. 4).",
+      "tryHint": "Try: click Softmax.",
+      "html": "<style>.n{fill:var(--paper);stroke:var(--node);stroke-width:1.5}[data-explore]{cursor:pointer}[data-explore]:hover .n,[data-explore]:focus-visible .n{stroke:var(--accent);fill:var(--accent-soft)}.t{font:13px system-ui;fill:var(--ink)}#r{font:12px system-ui;margin-top:8px;border:1px solid var(--line);background:#fff;border-radius:99px;padding:4px 12px;cursor:pointer}</style>\n<svg viewBox=\"0 0 600 240\" width=\"100%\"><title>Fixture: Q, K, V flow into attention</title>\n<g data-explore=\"query\" tabindex=\"0\" role=\"button\" aria-label=\"Query\"><rect class=\"n\" x=\"30\" y=\"40\" width=\"120\" height=\"44\" rx=\"10\"/><text class=\"t\" x=\"90\" y=\"67\" text-anchor=\"middle\">Query</text></g>\n<g data-explore=\"key\" tabindex=\"0\" role=\"button\" aria-label=\"Key\"><rect class=\"n\" x=\"30\" y=\"100\" width=\"120\" height=\"44\" rx=\"10\"/><text class=\"t\" x=\"90\" y=\"127\" text-anchor=\"middle\">Key</text></g>\n<g data-explore=\"softmax\" tabindex=\"0\" role=\"button\" aria-label=\"Softmax\"><rect class=\"n\" x=\"300\" y=\"70\" width=\"140\" height=\"44\" rx=\"10\"/><text class=\"t\" x=\"370\" y=\"97\" text-anchor=\"middle\">softmax(QKᵀ/√dₖ)</text></g>\n<path id=\"p\" d=\"M150 62 C220 62 240 92 300 92 M150 122 C220 122 240 92 300 92\" fill=\"none\" stroke=\"var(--accent)\" stroke-width=\"1.5\" stroke-dasharray=\"400\" stroke-dashoffset=\"400\"><animate attributeName=\"stroke-dashoffset\" to=\"0\" dur=\"2s\" fill=\"freeze\"/></path>\n<text x=\"30\" y=\"220\" style=\"font:11px system-ui;fill:var(--ink-3)\">Fixture diagram (illustrative)</text></svg><button id=\"r\">Replay</button>\n<script>document.getElementById(\"r\").onclick=()=>location.reload()</script>",
+      "explorables": [
+        {
+          "id": "query",
+          "label": "Query",
+          "blurb": "Query explained in one or two sentences (fixture).",
+          "pages": [
+            4
+          ],
+          "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+        },
+        {
+          "id": "key",
+          "label": "Key",
+          "blurb": "Key explained in one or two sentences (fixture).",
+          "pages": [
+            4
+          ],
+          "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+        },
+        {
+          "id": "softmax",
+          "label": "Softmax",
+          "blurb": "Softmax explained in one or two sentences (fixture).",
+          "pages": [
+            4
+          ],
+          "quote": "We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients"
+        }
+      ]
+    }
+  }
+}

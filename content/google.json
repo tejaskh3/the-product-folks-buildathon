@@ -1,0 +1,64 @@
+{
+  "citation": "Brin, S., & Page, L. (1998). The anatomy of a large-scale hypertextual Web search engine. Computer Networks and ISDN Systems, 30(1–7), 107–117.",
+  "scenes": {
+    "s1": {
+      "explanation": "By 1998 the web had grown to tens of millions of pages, and older search engines returned lots of 'junk' — pages barely related to the query — because there was no good way to separate high-quality pages from spam. Bigger indexes did not mean better answers: they could bury the page users actually wanted, like whitehouse.gov, under grey noise, and some engines could not even find their own homepage. This is the problem the paper opens with. It motivates looking beyond keyword matching toward a quality signal drawn from the web's own structure, which later scenes introduce.",
+      "section": "1.3.1 Improved Search Quality"
+    },
+    "s2": {
+      "explanation": "Classic information retrieval ranks a document by how closely its words match the query, a method built for small, curated collections like libraries. On the open web anyone can publish anything, so this approach rewards tiny, manipulated pages — famously, a major search engine once returned a page containing only 'Bill Clinton Sucks' and a picture for a 'Bill Clinton' query. This showed word frequency alone could not measure quality or trustworthiness, and that the uncontrolled, gameable nature of web data breaks assumptions built into traditional IR. It sets up the case for a harder-to-fake signal: links from other pages.",
+      "section": "3.2 Differences Between the Web and Well Controlled Collections"
+    },
+    "s3": {
+      "explanation": "Google's core idea reframes a hyperlink as a citation: a page linking to whitehouse.gov is effectively casting a vote that whitehouse.gov is worth visiting, and pages with more such votes deserve more trust. Just as important, the clickable text of the link, the anchor text, gets attributed to the page it points to, so a page can be found and described using words that never appear on it. This lets Google index pages, even ones it hasn't crawled, purely from what others say about them. It bridges the word-matching problem of the last scene to the PageRank formula in the next.",
+      "section": "2.1 PageRank: Bringing Order to the Web · 2.2 Anchor Text"
+    },
+    "s4": {
+      "explanation": "PageRank formalizes 'links as votes' into a formula: every page starts with a base share of importance, (1−d), then gains additional rank flowing in from every page that links to it. Each linking page T splits its own rank PR(T) evenly across all C(T) of its outgoing links, so a link from a selective page carries more weight than one from a page linking to everything. The damping factor d, set to 0.85, is the probability a 'random surfer' clicking links keeps going rather than jumping elsewhere, and because rank depends on other pages' rank, the calculation repeats recursively until it settles.",
+      "section": "2.1.1 Description of PageRank Calculation"
+    },
+    "s5": {
+      "explanation": "This diagram traces a query through Google's whole pipeline in the order data actually flows. Crawlers download raw pages into a compressed Repository; the Indexer reads it, turns words into 'hits' sorted into Barrels, and separately extracts every link's anchor text and destination, feeding the link graph used for PageRank via the URL Resolver. The Sorter then rebuilds those barrels into an inverted index organized by word rather than by document, and the Searcher uses that index plus PageRank to answer a live query like 'bill clinton.' Each earlier idea, the junk problem, links as votes, and the PageRank math, becomes one stage here.",
+      "section": "4.1 Google Architecture Overview"
+    },
+    "s6": {
+      "explanation": "For a candidate page, Google doesn't just check that 'bill' and 'clinton' appear, it notes where they appear, such as title, anchor text, or large font, and how close together they sit, since prominent, nearby matches suggest a better result. These counts, weighted by hit type and proximity, are combined via a dot product into a single IR (information retrieval) score. That score is then mixed with the page's PageRank to produce the final rank, so a page can win by strong textual match, by broad importance, or a mix of both. This is where anchor text from scene 3 and PageRank from scene 4 both feed one ranking decision.",
+      "section": "4.5.1 The Ranking System"
+    },
+    "s7": {
+      "explanation": "Brin and Page validated their design on a real prototype: crawling and indexing 24 million pages in under a week, compressing 147.8 GB of raw HTML into a 53.5 GB repository, with roughly 55.2 GB used by the rest of the index. Searching 'bill clinton' surfaced whitehouse.gov pages, including some found only through anchor text pointing to them rather than their own content, and the results contained no broken links. This scene shows the ideas from earlier scenes, PageRank, anchor text, and the pipeline, actually worked at web scale, not just in theory.",
+      "section": "5 Results and Performance"
+    },
+    "s8": {
+      "explanation": "The paper is candid about its own limits: the authors judged search quality from their own experience using the system rather than a formal, blinded user study, since they didn't have room to run one. Query response time was 1 to 10 seconds without caching, dominated by disk I/O rather than computation, which would need to improve for production use. The authors also flag that scaling far beyond the 24-million-page prototype toward hundreds of millions of pages was an open engineering challenge they had not yet solved. This tempers the strong results in the previous scene with a clear list of what remained unproven.",
+      "section": "5 Results and Performance"
+    }
+  },
+  "takeaways": [
+    {
+      "idea": "Links act as votes; pages linked by important pages become important.",
+      "tryIt": "Raise C(T1) to split T1's vote across more links and watch whitehouse.gov's PageRank bar shrink.",
+      "sceneId": "s4"
+    },
+    {
+      "idea": "Anchor text lets a page be found by words it never contains.",
+      "tryIt": "Switch where the link text belongs, then slide linking pages down to zero to see anchor text vanish.",
+      "sceneId": "s3"
+    },
+    {
+      "idea": "Google's pipeline separates crawling, indexing, sorting, and ranking into stages.",
+      "tryIt": "Drag the stage slider to watch data flow from Repository through Barrels to the Searcher.",
+      "sceneId": "s5"
+    },
+    {
+      "idea": "24 million pages were crawled and indexed in under a week.",
+      "tryIt": "Drag the pages-crawled slider toward 100M to see how storage would grow if scaling stayed linear.",
+      "sceneId": "s7"
+    },
+    {
+      "idea": "Search quality was judged by eye, not a formal user study.",
+      "tryIt": "Switch between Initial and Repeated queries, then push index size past 100M to see the open scaling question.",
+      "sceneId": "s8"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "slug": "anatomy-of-a-search-engine",
+  "rank": 2,
+  "blurb": "The original Google paper: PageRank, and how to crawl and index the whole web.",
+  "pdf": "../public/demo/google.pdf",
+  "walkthrough": "../public/demo/walkthrough-google.json",
+  "replaces": ["file:file_01NZ22YY3uL3nLTsw36jn5po"]
+}

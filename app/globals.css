@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-paper: #ffffff;
+  --color-paper-2: #f8f7f5;
+  --color-ink: #1a1917;
+  --color-ink-2: #57554f;
+  --color-ink-3: #8c8983;
+  --color-line: #e7e5e0;
+  --color-node: #bdb9b1;
+  --color-accent: #e5702f;
+  --color-accent-hover: #d6621f;
+  --color-accent-soft: #fcefe6;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.font-serif {
+  font-variation-settings: "SOFT" 30, "opsz" 96;
+  font-weight: 380;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+/* Dialogs take focus themselves (tabindex -1) so the keyboard starts inside them; no ring around the whole panel. */
+[tabindex="-1"]:focus-visible {
+  outline: none;
+}
+
+@layer components {
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease;
+  }
+  /* Near-black text on orange keeps contrast above 5:1. */
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+  }
+  .btn-secondary {
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+    background: white;
+  }
+  .btn-secondary:hover {
+    border-color: var(--color-node);
+  }
+}
+
+/* Line art that draws itself in once scrolled into view (see DrawOnView). */
+.draw-on-view [data-d] {
+  stroke-dasharray: 1 1.02;
+  stroke-dashoffset: 1.02;
+  transition: stroke-dashoffset 1.1s cubic-bezier(0.45, 0, 0.25, 1) var(--delay, 0s);
+}
+.draw-on-view [data-f] {
+  opacity: 0;
+  transition: opacity 0.5s ease var(--delay, 0s);
+}
+.draw-on-view[data-drawn] [data-d] {
+  stroke-dashoffset: 0;
+}
+.draw-on-view[data-drawn] [data-f] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .draw-on-view [data-d],
+  .draw-on-view [data-f] {
+    transition: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Reader highlights (see components/play/paintHighlights.ts). Works under the PDF's transparent text too. */
+::highlight(curio-yellow) { background-color: rgb(250 204 21 / 0.42); }
+::highlight(curio-green) { background-color: rgb(74 222 128 / 0.38); }
+::highlight(curio-blue) { background-color: rgb(96 165 250 / 0.36); }
+::highlight(curio-pink) { background-color: rgb(244 114 182 / 0.34); }
