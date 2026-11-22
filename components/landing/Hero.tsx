@@ -22,6 +22,17 @@ export function Hero() {
               Upload your paper
             </Link>
           </div>
+          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-2">
+            <span className="font-medium text-ink">New:</span> tell Curio your topics and it keeps you on the cutting edge: the
+            newest research, notifications and a spoken briefing.{" "}
+            <Link href="/research" className="text-accent-hover underline underline-offset-2">
+              Try the research agent
+            </Link>{" "}
+            ·{" "}
+            <Link href="/for-you" className="text-accent-hover underline underline-offset-2">
+              Set up your feed
+            </Link>
+          </p>
         </div>
       </div>
 
